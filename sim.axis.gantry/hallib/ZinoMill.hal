@@ -4,10 +4,75 @@ show comp
 # motion controller, get name and thread periods from INI file
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
 
-# add motion controller functions to servo thread
+
+#Setting up Ethercat stuff
+loadusr -W lcec_conf /home/panzinod/Downloads/ethercat-conf.xml
+loadrt lcec
+loadrt cia402
+
+#Load PID controllers for all 5 axes.
+loadrt pid names=x-pid, y-pid, z-pid, a-pid, c-pid
+
+
+
+
+# load velocity and acceleration
+loadrt ddt names=ddt_x, ddt_xv, ddt_y, ddt_yv, ddt_z, ddt_zv, ddt_a, ddt_av, ddt_c, ddt_cv
+
+# Also do some cartesian velocities
+loadrt hypot names=vel_xy, vel_xyz
+
+# add everything to servo thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
 
+addf ddt_x servo-thread
+addf ddt_xv servo-thread
+addf ddt_y servo-thread
+addf ddt_yv servo-thread
+addf ddt_z servo-thread
+addf ddt_zv servo-thread
+addf ddt_a servo-thread
+addf ddt_av servo-thread
+addf ddt_c servo-thread
+addf ddt_cv servo-thread
+addf vel_xy servo-thread
+addf vel_xyz servo-thread
+
+addf lcec.read-all servo-thread
+addf cia402.0.read-all servo-thread
+addf cia402.0.write-all servo-thread
+addf lcec.write-all servo-thread
+
+addf x-pid.do-pid-calcs servo-thread
+addf y-pid.do-pid-calcs servo-thread
+addf z-pid.do-pid-calcs servo-thread
+addf a-pid.do-pid-calcs servo-thread
+addf c-pid.do-pid-calcs servo-thread
+
+
+
+#Wire up the differentiators for velocity and acceleration 
+net Xvel ddt_x.out => ddt_xv.in vel_xy.in0
+net Xacc <= ddt_xv.out
+net Yvel ddt_y.out => ddt_yv.in vel_xy.in1
+net Yacc <= ddt_yv.out
+net Zvel ddt_z.out => ddt_zv.in vel_xyz.in0
+net Zacc <= ddt_zv.out
+net Avel ddt_a.out => ddt_av.in
+net Aacc <= ddt_av.out
+net Cvel ddt_c.out => ddt_cv.in
+net Cacc <= ddt_cv.out
+#TODO: Isn't this missing the actual input signal from the position????????????????????????????
+net XYvel vel_xy.out => vel_xyz.in1
+net XYZvel <= vel_xyz.out
+
+
+########################################################################################################################
+#################################      Simulation Zone       ###########################################################
+########################################################################################################################
+
+#THIS IS FOR SIMULATION
 # create HAL signals for position commands from motion module
 # loop position commands back to motion module feedback
 net J0pos joint.0.motor-pos-cmd => joint.0.motor-pos-fb
@@ -15,12 +80,18 @@ net J1pos joint.1.motor-pos-cmd => joint.1.motor-pos-fb
 net J2pos joint.2.motor-pos-cmd => joint.2.motor-pos-fb
 net J3pos joint.3.motor-pos-cmd => joint.3.motor-pos-fb
 
+#THIS IS FOR SIMULATION
 # estop loopback
 net estop-loop iocontrol.0.user-enable-out => iocontrol.0.emc-enable-in
 
+#THIS IS FOR SIMULATION
 # create signals for tool loading loopback
 net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 net tool-change-loop iocontrol.0.tool-change => iocontrol.0.tool-changed
+
+
+
+
 
 # amp control - these nets are not used, but are placeholders for
 # converting this sample config to actual machines
