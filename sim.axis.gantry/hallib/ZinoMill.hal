@@ -71,6 +71,12 @@ net XYZvel <= vel_xyz.out
 #net emc-enable => iocontrol.0.emc-enable-in
 #sets emc-enable 1
 
+
+######      The Ethercat wiring order is 012345 --> XYYZAB
+######      Then 6 onwards is the Beckhoff I/O Modules
+
+
+
 ########################################################################################################################
 #################################      X-Axis Setup       #############################################################
 ########################################################################################################################
@@ -91,11 +97,14 @@ net x-modes-of-operastion cia402.0.opmode => lcec.0.0.opmode
 net x-drv-target-pos  cia402.0.drv-target-position => lcec.0.0.target-position
 net x-drv-target-velo cia402.0.drv-target-velocity => lcec.0.0.target-velocity
 
-#The interactions with LinuxCNC more broadly
+LinuxCNC Telling cia402 what to do:
 net x-enable <= joint.0.amp-enable-out => cia402.0.enable
-net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
 net Xpos <= joint.0.motor-pos-cmd => cia402.0.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
 net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
+
 
 
 
