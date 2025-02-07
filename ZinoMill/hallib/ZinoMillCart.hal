@@ -6,21 +6,21 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JO
 
 
 #Setting up Ethercat stuff
-loadusr -W lcec_conf /home/panzinod/Downloads/ethercat-conf.xml
+loadusr -W lcec_conf /home/panzinod/linuxcnc/configs/ZinoMill/ethercat-conf.xml
 loadrt lcec
 loadrt cia402
 
 #Load PID controllers for all 5 axes.
-loadrt pid names=x-pid, y-pid, z-pid
+loadrt pid names=x-pid,y-pid,z-pid
 
 
 
 
 # load velocity and acceleration
-loadrt ddt names=ddt_x, ddt_xv, ddt_y, ddt_yv, ddt_z, ddt_zv
+loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv
 
 # Also do some cartesian velocities
-loadrt hypot names=vel_xy, vel_xyz
+loadrt hypot names=vel_xy,vel_xyz
 
 # add everything to servo thread
 addf motion-command-handler servo-thread
@@ -36,9 +36,17 @@ addf vel_xy servo-thread
 addf vel_xyz servo-thread
 
 addf lcec.read-all servo-thread
+addf lcec.write-all servo-thread
+
+
 addf cia402.0.read-all servo-thread
 addf cia402.0.write-all servo-thread
-addf lcec.write-all servo-thread
+addf cia402.1.read-all servo-thread
+addf cia402.1.write-all servo-thread
+addf cia402.2.read-all servo-thread
+addf cia402.2.write-all servo-thread
+addf cia402.3.read-all servo-thread
+addf cia402.3.write-all servo-thread
 
 addf x-pid.do-pid-calcs servo-thread
 addf y-pid.do-pid-calcs servo-thread
