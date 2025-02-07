@@ -1,3 +1,6 @@
+# I think this hal file is required even without the exact encoder part, per se.
+
+
 # simulated spindle encoder (for spindle-synced moves)
 loadrt sim_spindle names=sim_spindle
 setp sim_spindle.scale 0.01666667
