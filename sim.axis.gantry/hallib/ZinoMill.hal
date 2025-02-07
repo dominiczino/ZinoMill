@@ -191,6 +191,63 @@ net Zpos <= joint.3.motor-pos-cmd => cia402.3.pos-cmd
 net z-amp-fault => joint.3.amp-fault-in <= cia402.3.drv-fault
 net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
 
+########################################################################################################################
+#################################      Joint 4 (A) Setup       #########################################################
+########################################################################################################################
+
+#Setting up the A Axis Servo
+setp cia402.4.csp-mode 1
+setp cia402.4.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net a-statusword lcec.0.4.cia-statusword => cia402.4.statusword
+net a-opmode-display lcec.0.4.opmode-display => cia402.4.opmode-display
+net a-drv-act-pos lcec.0.4.actual-position => cia402.4.drv-actual-position
+net a-drv-act-velo lcec.0.4.actual-velocity => cia402.4.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net a-controlword     cia402.4.controlword => lcec.0.4.cia-controlword
+net a-modes-of-operastion cia402.4.opmode => lcec.0.4.opmode
+net a-drv-target-pos  cia402.4.drv-target-position => lcec.0.4.target-position
+net a-drv-target-velo cia402.4.drv-target-velocity => lcec.0.4.target-velocity
+
+LinuxCNC Telling cia402 what to do:
+net a-enable <= joint.4.amp-enable-out => cia402.4.enable
+net Apos <= joint.4.motor-pos-cmd => cia402.4.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net a-amp-fault => joint.4.amp-fault-in <= cia402.4.drv-fault
+net a-pos-fb => joint.4.motor-pos-fb ddt_a.in <= cia402.4.pos-fb
+
+
+########################################################################################################################
+#################################      Joint 5 (C) Setup       #########################################################
+########################################################################################################################
+
+#Setting up the C Axis Servo
+setp cia402.5.csp-mode 1
+setp cia402.5.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net c-statusword lcec.0.5.cia-statusword => cia402.5.statusword
+net c-opmode-display lcec.0.5.opmode-display => cia402.5.opmode-display
+net c-drv-act-pos lcec.0.5.actual-position => cia402.5.drv-actual-position
+net c-drv-act-velo lcec.0.5.actual-velocity => cia402.5.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net c-controlword     cia402.5.controlword => lcec.0.5.cia-controlword
+net c-modes-of-operastion cia402.5.opmode => lcec.0.5.opmode
+net c-drv-target-pos  cia402.5.drv-target-position => lcec.0.5.target-position
+net c-drv-target-velo cia402.5.drv-target-velocity => lcec.0.5.target-velocity
+
+LinuxCNC Telling cia402 what to do:
+net c-enable <= joint.5.amp-enable-out => cia402.5.enable
+net Cpos <= joint.5.motor-pos-cmd => cia402.5.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net c-amp-fault => joint.5.amp-fault-in <= cia402.5.drv-fault
+net c-pos-fb => joint.5.motor-pos-fb ddt_c.in <= cia402.5.pos-fb
+
 
 
 
