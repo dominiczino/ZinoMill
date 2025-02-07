@@ -1,0 +1,199 @@
+loadrt [KINS]KINEMATICS
+show comp
+
+# motion controller, get name and thread periods from INI file
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+
+
+#Setting up Ethercat stuff
+loadusr -W lcec_conf /home/panzinod/Downloads/ethercat-conf.xml
+loadrt lcec
+loadrt cia402
+
+#Load PID controllers for all 5 axes.
+loadrt pid names=x-pid, y-pid, z-pid
+
+
+
+
+# load velocity and acceleration
+loadrt ddt names=ddt_x, ddt_xv, ddt_y, ddt_yv, ddt_z, ddt_zv
+
+# Also do some cartesian velocities
+loadrt hypot names=vel_xy, vel_xyz
+
+# add everything to servo thread
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+
+addf ddt_x servo-thread
+addf ddt_xv servo-thread
+addf ddt_y servo-thread
+addf ddt_yv servo-thread
+addf ddt_z servo-thread
+addf ddt_zv servo-thread
+addf vel_xy servo-thread
+addf vel_xyz servo-thread
+
+addf lcec.read-all servo-thread
+addf cia402.0.read-all servo-thread
+addf cia402.0.write-all servo-thread
+addf lcec.write-all servo-thread
+
+addf x-pid.do-pid-calcs servo-thread
+addf y-pid.do-pid-calcs servo-thread
+addf z-pid.do-pid-calcs servo-thread
+
+
+
+#Wire up the differentiators for velocity and acceleration 
+net Xvel ddt_x.out => ddt_xv.in vel_xy.in0
+net Xacc <= ddt_xv.out
+net Yvel ddt_y.out => ddt_yv.in vel_xy.in1
+net Yacc <= ddt_yv.out
+net Zvel ddt_z.out => ddt_zv.in vel_xyz.in0
+net Zacc <= ddt_zv.out
+
+net XYvel vel_xy.out => vel_xyz.in1
+net XYZvel <= vel_xyz.out
+
+
+
+######      The Ethercat wiring order is 012345 --> XYYZAB
+######      Then 6 onwards is the Beckhoff I/O Modules
+
+
+
+########################################################################################################################
+#################################      Joint 0 (X) Setup       #########################################################
+########################################################################################################################
+
+#Setting up the X Axis Servo
+setp cia402.0.csp-mode 1
+setp cia402.0.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net x-statusword lcec.0.0.cia-statusword => cia402.0.statusword
+net x-opmode-display lcec.0.0.opmode-display => cia402.0.opmode-display
+net x-drv-act-pos lcec.0.0.actual-position => cia402.0.drv-actual-position
+net x-drv-act-velo lcec.0.0.actual-velocity => cia402.0.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net x-controlword     cia402.0.controlword => lcec.0.0.cia-controlword
+net x-modes-of-operastion cia402.0.opmode => lcec.0.0.opmode
+net x-drv-target-pos  cia402.0.drv-target-position => lcec.0.0.target-position
+net x-drv-target-velo cia402.0.drv-target-velocity => lcec.0.0.target-velocity
+
+#LinuxCNC Telling cia402 what to do:
+net x-enable <= joint.0.amp-enable-out => cia402.0.enable
+net Xpos <= joint.0.motor-pos-cmd => cia402.0.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
+net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
+
+
+########################################################################################################################
+#################################      Joint 1 (Y1) Setup       ########################################################
+########################################################################################################################
+
+setp cia402.1.csp-mode 1
+setp cia402.1.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net y1-statusword lcec.0.1.cia-statusword => cia402.1.statusword
+net y1-opmode-display lcec.0.1.opmode-display => cia402.1.opmode-display
+net y1-drv-act-pos lcec.0.1.actual-position => cia402.1.drv-actual-position
+net y1-drv-act-velo lcec.0.1.actual-velocity => cia402.1.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net y1-controlword     cia402.1.controlword => lcec.0.1.cia-controlword
+net y1-modes-of-operastion cia402.1.opmode => lcec.0.1.opmode
+net y1-drv-target-pos  cia402.1.drv-target-position => lcec.0.1.target-position
+net y1-drv-target-velo cia402.1.drv-target-velocity => lcec.0.1.target-velocity
+
+#LinuxCNC Telling cia402 what to do:
+net y1-enable <= joint.1.amp-enable-out => cia402.1.enable
+net Y1pos <= joint.1.motor-pos-cmd => cia402.1.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net y1-amp-fault => joint.1.amp-fault-in <= cia402.1.drv-fault
+net y1-pos-fb => joint.1.motor-pos-fb ddt_y.in <= cia402.1.pos-fb
+
+
+
+########################################################################################################################
+#################################      Joint 2 (Y2) Setup       ########################################################
+########################################################################################################################
+
+setp cia402.2.csp-mode 1
+setp cia402.2.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net y2-statusword lcec.0.2.cia-statusword => cia402.2.statusword
+net y2-opmode-display lcec.0.2.opmode-display => cia402.2.opmode-display
+net y2-drv-act-pos lcec.0.2.actual-position => cia402.2.drv-actual-position
+net y2-drv-act-velo lcec.0.2.actual-velocity => cia402.2.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net y2-controlword     cia402.2.controlword => lcec.0.2.cia-controlword
+net y2-modes-of-operastion cia402.2.opmode => lcec.0.2.opmode
+net y2-drv-target-pos  cia402.2.drv-target-position => lcec.0.2.target-position
+net y2-drv-target-velo cia402.2.drv-target-velocity => lcec.0.2.target-velocity
+
+#LinuxCNC Telling cia402 what to do:
+net y2-enable <= joint.2.amp-enable-out => cia402.2.enable
+net Y2pos <= joint.2.motor-pos-cmd => cia402.2.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net y2-amp-fault => joint.2.amp-fault-in <= cia402.2.drv-fault
+net y2-pos-fb => joint.2.motor-pos-fb <= cia402.2.pos-fb
+
+
+########################################################################################################################
+#################################      Joint 3 (Z) Setup       #########################################################
+########################################################################################################################
+
+#Setting up the Z Axis Servo
+setp cia402.3.csp-mode 1
+setp cia402.3.pos-scale 869046
+
+#All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
+net z-statusword lcec.0.3.cia-statusword => cia402.3.statusword
+net z-opmode-display lcec.0.3.opmode-display => cia402.3.opmode-display
+net z-drv-act-pos lcec.0.3.actual-position => cia402.3.drv-actual-position
+net z-drv-act-velo lcec.0.3.actual-velocity => cia402.3.drv-actual-velocity
+
+#All the stuff where the CIA402 layer need to tell the ethercat drive what to do
+net z-controlword     cia402.3.controlword => lcec.0.3.cia-controlword
+net z-modes-of-operastion cia402.3.opmode => lcec.0.3.opmode
+net z-drv-target-pos  cia402.3.drv-target-position => lcec.0.3.target-position
+net z-drv-target-velo cia402.3.drv-target-velocity => lcec.0.3.target-velocity
+
+#LinuxCNC Telling cia402 what to do:
+net z-enable <= joint.3.amp-enable-out => cia402.3.enable
+net Zpos <= joint.3.motor-pos-cmd => cia402.3.pos-cmd
+
+#cia402 telling LinuxCNC what's going on
+net z-amp-fault => joint.3.amp-fault-in <= cia402.3.drv-fault
+net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
+
+
+
+
+
+
+########################################################################################################################
+#################################      Simulation Zone       ###########################################################
+########################################################################################################################
+
+#THIS IS FOR SIMULATION
+# estop loopback
+#Normally emc-enable-in would be the result of an AND between user-enable-out and an I/O read from the E-stop circuit.
+#Additionally the E-stop should also kill servo power directly, of course
+net estop-loop iocontrol.0.user-enable-out => iocontrol.0.emc-enable-in
+
+#THIS IS FOR SIMULATION
+# create signals for tool loading loopback
+net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
+net tool-change-loop iocontrol.0.tool-change => iocontrol.0.tool-changed
