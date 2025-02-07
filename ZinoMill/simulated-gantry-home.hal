@@ -1,4 +1,3 @@
-
 #This entire HAL file is for simulation only.
 #It does not control the homing process
 #It only creates fake home switch signals based on current position
