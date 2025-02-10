@@ -1,0 +1,38 @@
+#This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
+
+loadrt not count=1
+loadrt scale count=1
+
+addf scale.0 servo-thread
+addf not.0 servo-thread
+
+#Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
+#When running with just the cartesian drives it will be slave #5
+
+#Defines the pins of the beckhoff module and what is driving them
+net Solenoid0 lcec.0.7.dout0 <= iocontrol.0.coolant-mist    #Coolant I,  M7
+net Solenoid1 lcec.0.7.dout1 <= iocontrol.0.coolant-flood   #Coolant II, M8
+net Solenoid2 lcec.0.7.dout2 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
+net Solenoid3 lcec.0.7.dout3 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
+net Solenoid4 lcec.0.7.dout4                                #Toolsetter purge
+net Solenoid5 lcec.0.7.dout5                                #Drawbar Release
+net Solenoid6 lcec.0.7.dout6 <= motion.spindle.0.on         #Spindle Purge, turn on any time the spindle is running
+net Solenoid7 lcec.0.7.dout7                                #Tool Rack actuator
+
+
+#Set the spindle direction pin to NOT(reverse)
+net spindle_dir_cmd not.0.in <= motion.spindle.0.reverse
+
+#Defines pins for the spindle control
+net Spindle_Run lcec.0.8.dout0 <= motion.spindle.0.on
+net Spindle_Dir lcec.0.8.dout0 <= not.0.out
+
+#Do the spindle speed stuff
+net spd_cmd motion.spindle.0.speed_out => scale.0.in
+setp scale.0.offset 0
+setp scale.0.gain 0.341333 #The DAC has 12-bit resolution, so 4098 divided by the maximum RPM (12k)
+
+
+net spindle_arduino_speed arduino.pwmout1 <= scale.0.out
+
+net Spindle_OK lcec.0.9.din0 => motion.spindle.0.at-speed
