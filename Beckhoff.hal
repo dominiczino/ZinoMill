@@ -11,19 +11,19 @@ addf not.0 servo-thread
 #The homeing input EL2001 is slave #9
 
 #Defines the pins of the beckhoff module and what is driving them
-net Solenoid0 lcec.0.7.dout1 <= iocontrol.0.coolant-mist    #Coolant I,  M7
-net Solenoid1 lcec.0.7.dout2 <= iocontrol.0.coolant-flood   #Coolant II, M8
-net Solenoid2 lcec.0.7.dout3 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
-net Solenoid3 lcec.0.7.dout4 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
-net Solenoid4 lcec.0.7.dout5                                #Toolsetter purge
-net Solenoid5 lcec.0.7.dout6                                #Drawbar Release
-net Solenoid6 lcec.0.7.dout7 <= motion.spindle.0.on         #Spindle Purge, turn on any time the spindle is running
-net Solenoid7 lcec.0.7.dout8                                #Tool Rack actuator
+net Solenoid0 lcec.0.7.dout-0 <= iocontrol.0.coolant-mist    #Coolant I,  M7
+net Solenoid1 lcec.0.7.dout-1 <= iocontrol.0.coolant-flood   #Coolant II, M8
+net Solenoid2 lcec.0.7.dout-2 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
+net Solenoid3 lcec.0.7.dout-3 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
+net Solenoid4 lcec.0.7.dout-4                                #Toolsetter purge
+net Solenoid5 lcec.0.7.dout-5                                #Drawbar Release
+net Solenoid6 lcec.0.7.dout-6 <= motion.spindle.0.on         #Spindle Purge, turn on any time the spindle is running
+net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
 #Defines the pins of the beckhoff module for the homing switches
-net J0homesw lcec.0.9.din7 => joint.0.home-sw-in
-net J3homesw lcec.0.9.din6 => joint.3.home-sw-in
+net J0homesw lcec.0.9.din-6 => joint.0.home-sw-in
+net J3homesw lcec.0.9.din-5 => joint.3.home-sw-in
 
 
 
@@ -33,8 +33,8 @@ net J3homesw lcec.0.9.din6 => joint.3.home-sw-in
 net spindle_dir_cmd not.0.in <= motion.spindle.0.reverse
 
 #Defines pins for the spindle control
-net Spindle_Run lcec.0.8.dout1 <= motion.spindle.0.on
-net Spindle_Dir lcec.0.8.dout2 <= not.0.out
+net Spindle_Run lcec.0.8.dout-0 <= motion.spindle.0.on
+net Spindle_Dir lcec.0.8.dout-1 <= not.0.out
 
 #Do the spindle speed stuff
 #net spd_cmd motion.spindle.0.speed_out => scale.0.in
@@ -44,4 +44,4 @@ net Spindle_Dir lcec.0.8.dout2 <= not.0.out
 
 #net spindle_arduino_speed arduino.pwmout1 <= scale.0.out
 
-#net Spindle_OK lcec.0.9.din1 => motion.spindle.0.at-speed
+#net Spindle_OK lcec.0.9.din0 => motion.spindle.0.at-speed
