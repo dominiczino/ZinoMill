@@ -91,7 +91,7 @@ net XYZvel <= vel_xyz.out
 
 #Setting up the X Axis Servo
 setp cia402.0.csp-mode 1
-setp cia402.0.pos-scale 869046
+setp cia402.0.pos-scale -869046
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net x-statusword lcec.0.0.cia-statusword => cia402.0.statusword

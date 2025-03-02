@@ -1,6 +1,6 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
-loadrt not count=1
+loadrt not count=7
 #loadrt scale count=1
 
 #addf scale.0 servo-thread
@@ -21,20 +21,35 @@ net Solenoid5 lcec.0.7.dout-5                                #Drawbar Release
 net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
-#Defines the pins of the beckhoff module for the homing switches
-net J0homesw lcec.0.9.din-6 => joint.0.home-sw-in
-net J3homesw lcec.0.9.din-5 => joint.3.home-sw-in
+
+#This inverts all the homing switch values because we have pull-down switches
+net J0homesw-raw lcec.0.9.din-6 => not.0.in
+#net J1homesw-raw lcec.0.9.din-x => not.1.in
+#net J2homesw-raw lcec.0.9.din-x => not.2.in
+net J3homesw-raw lcec.0.9.din-5 => not.3.in
+#net J4homesw-raw lcec.0.9.din-x => not.4.in
+#net J5homesw-raw lcec.0.9.din-x => not.5.in
+
+
+#This then pipes that inverted signal into LinuxCNC
+net J0homesw not.0.out => joint.0.home-sw-in
+#net J1homesw not.1.out => joint.1.home-sw-in
+#net J2homesw not.2.out => joint.2.home-sw-in
+net J3homesw not.3.out => joint.3.home-sw-in
+#net J4homesw not.4.out => joint.4.home-sw-in
+#net J5homesw not.5.out => joint.5.home-sw-in
+
 
 
 
 
 
 #Set the spindle direction pin to NOT(reverse)
-net spindle_dir_cmd not.0.in <= spindle.0.reverse
+net spindle_dir_cmd not.6.in <= spindle.0.reverse
 
 #Defines pins for the spindle control
 net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-6
-net Spindle_Dir lcec.0.8.dout-1 <= not.0.out
+net Spindle_Dir lcec.0.8.dout-1 <= not.6.out
 
 #Do the spindle speed stuff
 #net spd_cmd motion.spindle.0.speed_out => scale.0.in
