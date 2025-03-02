@@ -195,7 +195,7 @@
           </pdoEntry>
         </pdo>
       </syncManager>
-      <syncManager idx="4" dir="in">
+      <syncManager idx="3" dir="in">
         <pdo idx="1a00">
           <pdoEntry idx="6041" subIdx="00" bitLen="16" halPin="cia-statusword" halType="u32"/>
           <pdoEntry idx="6061" subIdx="00" bitLen="8" halPin="opmode-display" halType="s32"/>
@@ -239,7 +239,7 @@
           </pdoEntry>
         </pdo>
       </syncManager>
-      <syncManager idx="5" dir="in">
+      <syncManager idx="3" dir="in">
         <pdo idx="1a00">
           <pdoEntry idx="6041" subIdx="00" bitLen="16" halPin="cia-statusword" halType="u32"/>
           <pdoEntry idx="6061" subIdx="00" bitLen="8" halPin="opmode-display" halType="s32"/>
