@@ -30,8 +30,8 @@ sets J5homeswpos -0.1
 net Y1pos => comp_j1.in0
 net Y2pos => comp_j2.in0
 #net Zpos => comp_j3.in1
-net Apos => comp_j3.in0
-net Cpos => comp_j3.in0
+net Apos => comp_j4.in0
+net Cpos => comp_j5.in0
 
 #setp comp_j0.hyst .02
 setp comp_j1.hyst .02
