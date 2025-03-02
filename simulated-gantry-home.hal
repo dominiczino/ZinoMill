@@ -12,48 +12,48 @@ loadrt comp names=comp_j0,comp_j1,comp_j2,comp_j3,comp_j4,comp_j5
 # Joint 4 = A axis, home switch is on negative end
 # Joint 5 = C axis, home switch is on negative end
 
-net J0homeswpos => comp_j0.in1
+#net J0homeswpos => comp_j0.in1
 net J1homeswpos => comp_j1.in1
 net J2homeswpos => comp_j2.in1
-net J3homeswpos => comp_j3.in0
+#net J3homeswpos => comp_j3.in0
 net J4homeswpos => comp_j4.in1
 net J5homeswpos => comp_j5.in1
 
-sets J0homeswpos -0.1
+#sets J0homeswpos -0.1
 sets J1homeswpos -0.1
 sets J2homeswpos 0.1
-sets J3homeswpos -0.1
+#sets J3homeswpos -0.1
 sets J4homeswpos -0.1
 sets J5homeswpos -0.1
 
-net Xpos => comp_j0.in0
+#net Xpos => comp_j0.in0
 net Y1pos => comp_j1.in0
 net Y2pos => comp_j2.in0
-net Zpos => comp_j3.in1
+#net Zpos => comp_j3.in1
 net Apos => comp_j3.in0
 net Cpos => comp_j3.in0
 
-setp comp_j0.hyst .02
+#setp comp_j0.hyst .02
 setp comp_j1.hyst .02
 setp comp_j2.hyst .02
-setp comp_j3.hyst .02
+#setp comp_j3.hyst .02
 setp comp_j4.hyst .02
 setp comp_j5.hyst .02
 
 # the X and Z joints share a home switch
 # the Y joints each have their own home switches
-net J0homesw <= comp_j0.out => joint.0.home-sw-in
+#net J0homesw <= comp_j0.out => joint.0.home-sw-in
 net J1homesw <= comp_j1.out => joint.1.home-sw-in
 net J2homesw <= comp_j2.out => joint.2.home-sw-in
-net J3homesw <= comp_j3.out => joint.3.home-sw-in
+#net J3homesw <= comp_j3.out => joint.3.home-sw-in
 net J4homesw <= comp_j4.out => joint.4.home-sw-in
 net J5homesw <= comp_j5.out => joint.5.home-sw-in
 
 
-addf comp_j0 servo-thread
+#addf comp_j0 servo-thread
 addf comp_j1 servo-thread
 addf comp_j2 servo-thread
-addf comp_j3 servo-thread
+#addf comp_j3 servo-thread
 addf comp_j4 servo-thread
 addf comp_j5 servo-thread
 
