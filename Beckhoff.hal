@@ -17,7 +17,7 @@ net Solenoid2 lcec.0.7.dout-2 <= motion.digital-out-00       #A-Axis Brake, M64 
 net Solenoid3 lcec.0.7.dout-3 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
 net Solenoid4 lcec.0.7.dout-4                                #Toolsetter purge
 net Solenoid5 lcec.0.7.dout-5                                #Drawbar Release
-net Solenoid6 lcec.0.7.dout-6 <= spindle.0.on         #Spindle Purge, turn on any time the spindle is running
+#net Solenoid6 lcec.0.7.dout-6 <= spindle.0.on               #Spindle Purge, turn on any time the spindle is running. Actually on the lower line
 net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
@@ -33,7 +33,7 @@ net J3homesw lcec.0.9.din-5 => joint.3.home-sw-in
 net spindle_dir_cmd not.0.in <= spindle.0.reverse
 
 #Defines pins for the spindle control
-net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on
+net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-6
 net Spindle_Dir lcec.0.8.dout-1 <= not.0.out
 
 #Do the spindle speed stuff
