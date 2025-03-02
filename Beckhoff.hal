@@ -5,6 +5,12 @@ loadrt not count=7
 
 #addf scale.0 servo-thread
 addf not.0 servo-thread
+addf not.1 servo-thread
+addf not.2 servo-thread
+addf not.3 servo-thread
+addf not.4 servo-thread
+addf not.5 servo-thread
+addf not.6 servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
