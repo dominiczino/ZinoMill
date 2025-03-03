@@ -166,13 +166,13 @@
           <!-- Target Velocity -->
           <pdoEntry idx="60FF" subIdx="00" bitLen="32" halPin="target-velocity" halType="s32"/>
           <!-- Digtial Outputs (manufacturer's extension ECT86/ECT60)-->
-          <pdoEntry idx="204A" subIdx="0" bitLen="16" halType="complex">
+          <pdoEntry idx="204A" subIdx="00" bitLen="16" halType="complex">
             <complexEntry bitLen="1" halPin="out-1" halType="bit"/>
             <complexEntry bitLen="1" halPin="out-2" halType="bit"/>
             <complexEntry bitLen="14"/>
           </pdoEntry>
           <!--Setting up the index pulses and probing-->
-          <pdoEntry idx="60B8" subIdx="0" bitLen="16" halType="complex">
+          <pdoEntry idx="60B8" subIdx="00" bitLen="16" halType="complex">
             <complexEntry bitLen="1" halPin="probe-1-en-write" halType="bit"/>
             <complexEntry bitLen="1" halPin="probe-1-continuous" halType="bit"/>
             <complexEntry bitLen="1" halPin="probe-1-use-index" halType="bit"/>
@@ -191,8 +191,8 @@
           <pdoEntry idx="606C" subIdx="00" bitLen="32" halPin="actual-velocity" halType="s32"/>
           <pdoEntry idx="6077" subIdx="00" bitLen="32" halPin="actual-torque" halType="s32"/>
           <!--I think this is the homing and probe data-->
-          <pdoEntry idx="60D5" subIdx="0" bitLen="16" halPin="probe-1-rising-count" halType="u32"/>
-          <pdoEntry idx="60B9" subIdx="0" bitLen="16" halType="complex">
+          <pdoEntry idx="60D5" subIdx="00" bitLen="16" halPin="probe-1-rising-count" halType="u32"/>
+          <pdoEntry idx="60B9" subIdx="00" bitLen="16" halType="complex">
             <complexEntry bitLen="1" halPin="probe-1-en-read" halType="bit"/>
             <complexEntry bitLen="1" halPin="probe-1-rising" halType="bit"/>
             <complexEntry bitLen="1" halPin="probe-1-falling" halType="bit"/>
@@ -203,7 +203,7 @@
             <complexEntry bitLen="5"/>
           </pdoEntry>          
           <!-- Digtial_inputs (cia402 compatible) -->
-          <pdoEntry idx="60FD" subIdx="0" bitLen="32" halType="complex">
+          <pdoEntry idx="60FD" subIdx="00" bitLen="32" halType="complex">
             <complexEntry bitLen="1" halPin="CW-limit" halType="bit"/>
             <complexEntry bitLen="1" halPin="CCW-limit" halType="bit"/>
             <complexEntry bitLen="1" halPin="in-home" halType="bit"/>
