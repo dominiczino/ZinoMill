@@ -172,15 +172,7 @@
             <complexEntry bitLen="14"/>
           </pdoEntry>
           <!--Setting up the index pulses and probing-->
-          <pdoEntry idx="60B8" subIdx="00" bitLen="16" halType="complex">
-            <complexEntry bitLen="1" halPin="probe-1-en-write" halType="bit"/>
-            <complexEntry bitLen="1" halPin="probe-1-continuous" halType="bit"/>
-            <complexEntry bitLen="1" halPin="probe-1-use-index" halType="bit"/>
-            <complexEntry bitLen="1"/>
-            <complexEntry bitLen="1" halPin="probe-1-use-rising" halType="bit"/>
-            <complexEntry bitLen="1" halPin="probe-1-use-falling" halType="bit"/>
-            <complexEntry bitLen="10"/>
-          </pdoEntry>
+          <pdoEntry idx="60B8" subIdx="00" bitLen="16" halPin="probe-word" halType="u32"/>
         </pdo>
       </syncManager>
       <syncManager idx="3" dir="in">
