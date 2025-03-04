@@ -42,12 +42,10 @@ setp comp_j5.hyst .02
 
 # the X and Z joints share a home switch
 # the Y joints each have their own home switches
-#net J0homesw <= comp_j0.out => joint.0.home-sw-in
-net J1homesw <= comp_j1.out => joint.1.home-sw-in
-net J2homesw <= comp_j2.out => joint.2.home-sw-in
-#net J3homesw <= comp_j3.out => joint.3.home-sw-in
-net J4homesw <= comp_j4.out => joint.4.home-sw-in
-net J5homesw <= comp_j5.out => joint.5.home-sw-in
+net J1homesw <= comp_j1.out => homeEdgeJ1.in
+net J2homesw <= comp_j2.out => homeEdgeJ2.in
+net J4homesw <= comp_j4.out => homeEdgeJ4.in
+net J5homesw <= comp_j5.out => homeEdgeJ5.in
 
 
 #addf comp_j0 servo-thread
