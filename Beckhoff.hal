@@ -13,6 +13,13 @@ addf not.4 servo-thread
 addf not.5 servo-thread
 addf not.6 servo-thread
 
+addf homeEdgeX servo-thread
+addf homeEdgeY1 servo-thread
+addf homeEdgeY2 servo-thread
+addf homeEdgeZ servo-thread
+addf homeEdgeA servo-thread
+addf homeEdgeC servo-thread
+
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
 #The homeing input EL2001 is slave #9

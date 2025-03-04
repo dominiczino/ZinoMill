@@ -64,12 +64,26 @@ addf z-pid.do-pid-calcs servo-thread
 addf a-pid.do-pid-calcs servo-thread
 addf c-pid.do-pid-calcs servo-thread
 
-addf homeEdgeX servo-thread
-addf homeEdgeY1 servo-thread
-addf homeEdgeY2 servo-thread
-addf homeEdgeZ servo-thread
-addf homeEdgeA servo-thread
-addf homeEdgeC servo-thread
+addf indexEdgeX servo-thread
+addf indexEdgeY2 servo-thread
+addf indexEdgeY1 servo-thread
+addf indexEdgeZ servo-thread
+addf indexEdgeA servo-thread
+addf indexEdgeC servo-thread
+
+addf homeOrX servo-thread
+addf homeOrY2 servo-thread
+addf homeOrY1 servo-thread
+addf homeOrZ servo-thread
+addf homeOrA servo-thread
+addf homeOrC servo-thread
+
+addf homeLatchX servo-thread
+addf homeLatchY2 servo-thread
+addf homeLatchY1 servo-thread
+addf homeLatchZ servo-thread
+addf homeLatchA servo-thread
+addf homeLatchC servo-thread
 
 
 
