@@ -157,7 +157,7 @@ net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
 net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
 
 #Set up the homing nightmare
-net J0-probe-val lcec.0.0.probe-1-en-read => indexEdgeJ0.in
+net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
 net J0-index indexEdgeJ0.out => homeOrJ0.in0
 net J0-home-reset homeOrJ0.out => homeLatchJ0.reset
 net J0-home-latch-val homeLatchJ0.fault-out => joint.0.home-sw-in
@@ -194,7 +194,7 @@ net y1-amp-fault => joint.1.amp-fault-in <= cia402.1.drv-fault
 net y1-pos-fb => joint.1.motor-pos-fb ddt_y.in <= cia402.1.pos-fb
 
 #Set up the homing nightmare
-net J1-probe-val lcec.0.1.probe-1-en-read => indexEdgeJ1.in
+net J1-probe-val lcec.0.1.probe-1-en => indexEdgeJ1.in
 net J1-index indexEdgeJ1.out => homeOrJ1.in0
 net J1-home-reset homeOrJ1.out => homeLatchJ1.reset
 net J1-home-latch-val homeLatchJ1.fault-out => joint.1.home-sw-in
@@ -232,7 +232,7 @@ net y2-amp-fault => joint.2.amp-fault-in <= cia402.2.drv-fault
 net y2-pos-fb => joint.2.motor-pos-fb <= cia402.2.pos-fb
 
 #Set up the homing nightmare
-net J2-probe-val lcec.0.2.probe-1-en-read => indexEdgeJ2.in
+net J2-probe-val lcec.0.2.probe-1-en => indexEdgeJ2.in
 net J2-index indexEdgeJ2.out => homeOrJ2.in0
 net J2-home-reset homeOrJ2.out => homeLatchJ2.reset
 net J2-home-latch-val homeLatchJ2.fault-out => joint.2.home-sw-in
@@ -270,7 +270,7 @@ net z-amp-fault => joint.3.amp-fault-in <= cia402.3.drv-fault
 net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
 
 #Set up the homing nightmare
-net J3-probe-val lcec.0.3.probe-1-en-read => indexEdgeJ3.in
+net J3-probe-val lcec.0.3.probe-1-en => indexEdgeJ3.in
 net J3-index indexEdgeJ3.out => homeOrJ3.in0
 net J3-home-reset homeOrJ3.out => homeLatchJ3.reset
 net J3-home-latch-val homeLatchJ3.fault-out => joint.3.home-sw-in
@@ -307,7 +307,7 @@ net a-amp-fault => joint.4.amp-fault-in <= cia402.4.drv-fault
 net a-pos-fb => joint.4.motor-pos-fb ddt_a.in <= cia402.4.pos-fb
 
 #Set up the homing nightmare
-net J4-probe-val lcec.0.4.probe-1-en-read => indexEdgeJ4.in
+net J4-probe-val lcec.0.4.probe-1-en => indexEdgeJ4.in
 net J4-index indexEdgeJ4.out => homeOrJ4.in0
 net J4-home-reset homeOrJ4.out => homeLatchJ4.reset
 net J4-home-latch-val homeLatchJ4.fault-out => joint.4.home-sw-in
@@ -345,7 +345,7 @@ net c-amp-fault => joint.5.amp-fault-in <= cia402.5.drv-fault
 net c-pos-fb => joint.5.motor-pos-fb ddt_c.in <= cia402.5.pos-fb
 
 #Set up the homing nightmare
-net J5-probe-val lcec.0.5.probe-1-en-read => indexEdgeJ5.in
+net J5-probe-val lcec.0.5.probe-1-en => indexEdgeJ5.in
 net J5-index indexEdgeJ5.out => homeOrJ5.in0
 net J5-home-reset homeOrJ5.out => homeLatchJ5.reset
 net J5-home-latch-val homeLatchJ5.fault-out => joint.5.home-sw-in
