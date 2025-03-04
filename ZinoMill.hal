@@ -234,7 +234,7 @@ net z-probe-val lcec.0.3.probe-1-en-read => indexEdgeZ.in
 net z-index indexEdgeZ.out => homeOrZ.in0
 net initialReset iocontrol.0.user-request-enable => homeOrZ.in1
 net z-home-reset homeOrZ.out => homeLatchZ.reset
-net z-home homeLatchZ.ok-out => joint.4.home-sw-in
+net z-home homeLatchZ.ok-out => joint.3.home-sw-in
 setp homeLatchZ.ok-in TRUE
 setp indexEdgeZ.both TRUE
 setp indexEdgeZ.out-width-ns 5000000
