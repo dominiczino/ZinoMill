@@ -19,9 +19,10 @@ loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_c
 # Also do some cartesian velocities
 loadrt hypot names=vel_xy,vel_xyz
 
-#Load the signal processing needed for homing
-loadrt edge names=homeEdgeX,homeEdgeY1,homeEdgeY2,homeEdgeZ,homeEdgeA,homeEdgeC
-
+#Load the signal processing needed for homing. I know, it's a lot
+loadrt edge names=indexEdgeX,indexEdgeY1,indexEdgeY2,indexEdgeZ,indexEdgeA,indexEdgeC
+loadrt estop_latch names=homeLatchX,homeLatchY1,homeLatchY2,homeLatchZ,homeLatchA,homeLatchC
+loadrt or names=homeOrX,homeOrY1,homeOrY2,homeOrZ,homeOrA,homeOrC
 
 # add everything to servo thread
 addf motion-command-handler servo-thread
@@ -85,6 +86,13 @@ net Cvel ddt_c.out => ddt_cv.in
 net Cacc <= ddt_cv.out
 net XYvel vel_xy.out => vel_xyz.in1
 net XYZvel <= vel_xyz.out
+
+
+
+
+
+
+
 
 
 
@@ -207,11 +215,15 @@ net Zpos <= joint.3.motor-pos-cmd => cia402.3.pos-cmd
 net z-amp-fault => joint.3.amp-fault-in <= cia402.3.drv-fault
 net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
 
-#Set up the homing thing
-net z-probe-val lcec.0.3.probe-1-en-read => homeEdgeZ.in
-net z-index homeEdgeZ.out => joint.3.index-enable
-setp homeEdgeZ.both TRUE
-setp homeEdgeZ.out-width-ns 500000
+#Set up the homing nightmare
+net z-probe-val lcec.0.3.probe-1-en-read => indexEdgeZ.in
+net z-index indexEdgeZ.out => homeOrZ.in1
+net initialReset iocontrol.0.user-request-enable => homeOrZ.in2
+net z-home-reset homeOrZ.out => homeLatchZ.reset
+net z-home homeLatchZ.ok-out => joint.4.home-sw-in
+setp homeLatchZ.ok-in TRUE
+setp indexEdgeZ.both TRUE
+setp indexEdgeZ.out-width-ns 5000000
 
 ########################################################################################################################
 #################################      Joint 4 (A) Setup       #########################################################

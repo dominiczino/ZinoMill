@@ -2,6 +2,7 @@
 
 loadrt not count=7
 #loadrt scale count=1
+loadrt edge names=homeEdgeX,homeEdgeY1,homeEdgeY2,homeEdgeZ,homeEdgeA,homeEdgeC
 
 #addf scale.0 servo-thread
 addf not.0 servo-thread
@@ -34,9 +35,15 @@ net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 net J0homesw lcec.0.9.din-5-not => joint.0.home-sw-in
 #net J1homesw lcec.0.9.din-x-not => joint.1.home-sw-in
 #net J2homesw lcec.0.9.din-x-not => joint.2.home-sw-in
-net J3homesw lcec.0.9.din-3-not => joint.3.home-sw-in
+net J3homesw lcec.0.9.din-3-not => homeEdgeZ.in
 #net J4homesw lcec.0.9.din-x-not => joint.4.home-sw-in
 #net J5homesw lcec.0.9.din-x-not => joint.5.home-sw-in
+
+
+net homeTrigger homeEdgeZ.out => homeLatchZ.fault-in
+
+setp homeEdgeZ.both TRUE
+setp homeEdgeZ.out-width-ns 5000000
 
 
 
