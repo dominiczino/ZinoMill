@@ -39,8 +39,7 @@ net J3homesw lcec.0.9.din-3-not => homeEdgeZ.in
 #net J5homesw lcec.0.9.din-x-not => joint.5.home-sw-in
 
 
-net homeTrigger homeEdgeZ.out => homeLatchZ.fault-in
-
+net homeTriggerZ homeEdgeZ.out => homeLatchZ.fault-in
 setp homeEdgeZ.both TRUE
 setp homeEdgeZ.out-width-ns 5000000
 

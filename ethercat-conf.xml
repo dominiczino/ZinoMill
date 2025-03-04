@@ -184,6 +184,7 @@
             <complexEntry bitLen="1" halPin="probe-2-falling" halType="bit"/>
             <complexEntry bitLen="5"/>
           </pdoEntry> 
+          <pdoEntry idx="60D5" subIdx="00" bitLen="16" halPin="probe-1-count" halType="u32"/>
           <!-- Digtial_inputs (cia402 compatible) -->
           <pdoEntry idx="60FD" subIdx="00" bitLen="32" halType="complex">
             <complexEntry bitLen="1" halPin="CW-limit" halType="bit"/>
