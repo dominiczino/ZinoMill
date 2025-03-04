@@ -22,7 +22,7 @@ loadrt hypot names=vel_xy,vel_xyz
 #Load the signal processing needed for homing. I know, it's a lot
 loadrt edge names=indexEdgeX,indexEdgeY1,indexEdgeY2,indexEdgeZ,indexEdgeA,indexEdgeC
 loadrt estop_latch names=homeLatchX,homeLatchY1,homeLatchY2,homeLatchZ,homeLatchA,homeLatchC
-loadrt or names=homeOrX,homeOrY1,homeOrY2,homeOrZ,homeOrA,homeOrC
+loadrt or2 names=homeOrX,homeOrY1,homeOrY2,homeOrZ,homeOrA,homeOrC
 
 # add everything to servo thread
 addf motion-command-handler servo-thread
@@ -217,8 +217,8 @@ net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
 
 #Set up the homing nightmare
 net z-probe-val lcec.0.3.probe-1-en-read => indexEdgeZ.in
-net z-index indexEdgeZ.out => homeOrZ.in1
-net initialReset iocontrol.0.user-request-enable => homeOrZ.in2
+net z-index indexEdgeZ.out => homeOrZ.in0
+net initialReset iocontrol.0.user-request-enable => homeOrZ.in1
 net z-home-reset homeOrZ.out => homeLatchZ.reset
 net z-home homeLatchZ.ok-out => joint.4.home-sw-in
 setp homeLatchZ.ok-in TRUE
