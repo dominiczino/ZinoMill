@@ -20,7 +20,7 @@ net J4homeswpos => comp_j4.in1
 net J5homeswpos => comp_j5.in1
 
 #sets J0homeswpos -0.1
-sets J1homeswpos -0.1
+sets J1homeswpos 0.1
 sets J2homeswpos 0.1
 #sets J3homeswpos -0.1
 sets J4homeswpos -0.1
