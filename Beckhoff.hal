@@ -2,7 +2,6 @@
 
 loadrt not count=7
 #loadrt scale count=1
-loadrt edge names=homeEdgeX,homeEdgeY1,homeEdgeY2,homeEdgeZ,homeEdgeA,homeEdgeC
 
 #addf scale.0 servo-thread
 addf not.0 servo-thread
@@ -12,13 +11,6 @@ addf not.3 servo-thread
 addf not.4 servo-thread
 addf not.5 servo-thread
 addf not.6 servo-thread
-
-addf homeEdgeX servo-thread
-addf homeEdgeY1 servo-thread
-addf homeEdgeY2 servo-thread
-addf homeEdgeZ servo-thread
-addf homeEdgeA servo-thread
-addf homeEdgeC servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8

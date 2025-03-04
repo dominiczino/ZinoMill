@@ -20,7 +20,7 @@ loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_c
 loadrt hypot names=vel_xy,vel_xyz
 
 #Load the signal processing needed for homing. I know, it's a lot
-loadrt edge names=indexEdgeX,indexEdgeY1,indexEdgeY2,indexEdgeZ,indexEdgeA,indexEdgeC
+loadrt edge names=indexEdgeX,indexEdgeY1,indexEdgeY2,indexEdgeZ,indexEdgeA,indexEdgeC,homeEdgeX,homeEdgeY1,homeEdgeY2,homeEdgeZ,homeEdgeA,homeEdgeC
 loadrt estop_latch names=homeLatchX,homeLatchY1,homeLatchY2,homeLatchZ,homeLatchA,homeLatchC
 loadrt or2 names=homeOrX,homeOrY1,homeOrY2,homeOrZ,homeOrA,homeOrC
 
@@ -70,6 +70,13 @@ addf indexEdgeY1 servo-thread
 addf indexEdgeZ servo-thread
 addf indexEdgeA servo-thread
 addf indexEdgeC servo-thread
+
+addf homeEdgeX servo-thread
+addf homeEdgeY1 servo-thread
+addf homeEdgeY2 servo-thread
+addf homeEdgeZ servo-thread
+addf homeEdgeA servo-thread
+addf homeEdgeC servo-thread
 
 addf homeOrX servo-thread
 addf homeOrY2 servo-thread
