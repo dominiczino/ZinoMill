@@ -45,7 +45,7 @@ net spindle_dir_cmd not.0.in <= spindle.0.reverse
 
 #Defines pins for the spindle control
 net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
-net Spindle_Dir lcec.0.8.dout-2 <= not.6.out
+net Spindle_Dir lcec.0.8.dout-2 <= not.0.out
 
 #Do the spindle speed stuff
 #net spd_cmd motion.spindle.0.speed_out => scale.0.in
