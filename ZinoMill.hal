@@ -93,7 +93,6 @@ addf homeLatchJ4 servo-thread
 addf homeLatchJ5 servo-thread
 
 
-
 #Wire up the differentiators for velocity and acceleration 
 net Xvel ddt_x.out => ddt_xv.in vel_xy.in0
 net Xacc <= ddt_xv.out
@@ -108,13 +107,21 @@ net Cacc <= ddt_cv.out
 net XYvel vel_xy.out => vel_xyz.in1
 net XYZvel <= vel_xyz.out
 
-
+#This makes sure the home switch latches are in the right state when we start up the machine.
 net initialReset iocontrol.0.user-request-enable => homeOrJ0.in1
 net initialReset homeOrJ1.in1
 net initialReset homeOrJ2.in1
 net initialReset homeOrJ3.in1
 net initialReset homeOrJ4.in1
 net initialReset homeOrJ5.in1
+
+#Sets the drives up to give us index pulses
+setp lcec.0.0.probe-word 23
+setp lcec.0.1.probe-word 23
+setp lcec.0.2.probe-word 23
+setp lcec.0.3.probe-word 23
+setp lcec.0.4.probe-word 23
+setp lcec.0.5.probe-word 23
 
 
 
