@@ -23,12 +23,12 @@ net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
 #This sets up all the homing pins. Not the LCEC output numbers are NOT the same as the numbers on the front of the beckhoff module !!!
-net J0homesw lcec.0.9.din-3-not => homeEdgeJ0.in
-#net J1homesw lcec.0.9.din-3-not => homeEdgeJ1.in
-#net J2homesw lcec.0.9.din-3-not => homeEdgeJ2.in
+net J0homesw lcec.0.9.din-5-not => homeEdgeJ0.in
+#net J1homesw lcec.0.9.din-x-not => homeEdgeJ1.in
+#net J2homesw lcec.0.9.din-x-not => homeEdgeJ2.in
 net J3homesw lcec.0.9.din-3-not => homeEdgeJ3.in
-#net J4homesw lcec.0.9.din-3-not => homeEdgeJ4.in
-#net J5homesw lcec.0.9.din-3-not => homeEdgeJ5.in
+#net J4homesw lcec.0.9.din-x-not => homeEdgeJ4.in
+#net J5homesw lcec.0.9.din-x-not => homeEdgeJ5.in
 
 net homeSwTriggerJ0 homeEdgeJ0.out => homeLatchJ0.fault-in
 net homeSwTriggerJ1 homeEdgeJ1.out => homeLatchJ1.fault-in
