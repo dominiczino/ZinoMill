@@ -1,5 +1,9 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
+
+loadrt not count=1
+addf not.0 servo-thread
+
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
 #The homeing input EL2001 is slave #9
@@ -37,7 +41,7 @@ setp homeEdgeZ.out-width-ns 5000000
 
 
 #Set the spindle direction pin to NOT(reverse)
-net spindle_dir_cmd not.6.in <= spindle.0.reverse
+net spindle_dir_cmd not.0.in <= spindle.0.reverse
 
 #Defines pins for the spindle control
 net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
