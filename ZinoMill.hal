@@ -80,7 +80,7 @@ net XYZvel <= vel_xyz.out
 
 
 
-######      The Ethercat wiring order is 012345 --> XYYZAB
+######      The Ethercat wiring order is 012345 --> XYYZAC
 ######      Then 6 onwards is the Beckhoff I/O Modules
 
 

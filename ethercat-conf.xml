@@ -160,19 +160,10 @@
       <syncManager idx="2" dir="out">
         <pdo idx="1600">
           <pdoEntry idx="6040" subIdx="00" bitLen="16" halPin="cia-controlword" halType="u32"/>
-          <pdoEntry idx="6060" subIdx="00" bitLen="8" halPin="opmode" halType="s32"/>
-          <!-- Target Position -->
-          <pdoEntry idx="607A" subIdx="00" bitLen="32" halPin="target-position" halType="s32"/>
-          <!-- Target Velocity -->
-          <pdoEntry idx="60FF" subIdx="00" bitLen="32" halPin="target-velocity" halType="s32"/>
-          <!-- Digtial Outputs (manufacturer's extension ECT86/ECT60)-->
-          <pdoEntry idx="204A" subIdx="00" bitLen="16" halType="complex">
-            <complexEntry bitLen="1" halPin="out-1" halType="bit"/>
-            <complexEntry bitLen="1" halPin="out-2" halType="bit"/>
-            <complexEntry bitLen="14"/>
-          </pdoEntry>
-          <!--Setting up the index pulses and probing-->
-          <pdoEntry idx="60B8" subIdx="00" bitLen="16" halPin="probe-word" halType="u32"/>
+          <pdoEntry idx="6060" subIdx="00" bitLen="8" halPin="opmode" halType="s32"/> 
+          <pdoEntry idx="607A" subIdx="00" bitLen="32" halPin="target-position" halType="s32"/> <!-- Target Position -->
+          <pdoEntry idx="60B8" subIdx="00" bitLen="16" halPin="probe-word" halType="u32"/> <!--Setting up the index pulses and probing-->
+          <pdoEntry idx="60FF" subIdx="00" bitLen="32" halPin="target-velocity" halType="s32"/> <!-- Target Velocity -->
         </pdo>
       </syncManager>
       <syncManager idx="3" dir="in">
