@@ -65,11 +65,11 @@ setp homeEdgeJ5.out-width-ns 5000000
 #net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
 #net Spindle_Dir lcec.0.8.dout-2 <= not.0.out
 
-net spindle_Run and.0.in0 <= spindle.0.on => and.1.in0
-net spindle_Dir and.1.in1 <= spindle.0.reverse => not.0.in
-net not.0.out => and.0.in1
-net run_cmd_fwd and.0.out => lcec.0.8.dout-0
-net run_cmd_rev and.1.out => lcec.0.8.dout-2
+net spindle_Run and2.0.in0 <= spindle.0.on => and2.1.in0
+net spindle_Dir and2.1.in1 <= spindle.0.reverse => not.0.in
+net not.0.out => and2.0.in1
+net run_cmd_fwd and2.0.out => lcec.0.8.dout-0
+net run_cmd_rev and2.1.out => lcec.0.8.dout-2
 
 
 
