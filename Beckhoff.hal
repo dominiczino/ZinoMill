@@ -3,6 +3,9 @@
 
 loadrt not count=1
 addf not.0 servo-thread
+loadrt and2 count=2
+addf and2.0 servo-thread
+addf and2.1 servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
@@ -57,11 +60,18 @@ setp homeEdgeJ5.out-width-ns 5000000
 
 
 #Set the spindle direction pin to NOT(reverse)
-net spindle_dir_cmd not.0.in <= spindle.0.reverse
-
+#net spindle_Dir not.0.in <= spindle.0.reverse
 #Defines pins for the spindle control
-net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
-net Spindle_Dir lcec.0.8.dout-2 <= not.0.out
+#net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
+#net Spindle_Dir lcec.0.8.dout-2 <= not.0.out
+
+net spindle_Run and.0.in0 <= spindle.0.on => and.1.in0
+net spindle_Dir and.1.in1 <= spindle.0.reverse => not.0.in
+net not.0.out => and.0.in1
+net run_cmd_fwd and.0.out => lcec.0.8.dout-0
+net run_cmd_rev and.1.out => lcec.0.8.dout-2
+
+
 
 #Do the spindle speed stuff
 #net spd_cmd motion.spindle.0.speed_out => scale.0.in
