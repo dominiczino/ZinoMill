@@ -74,7 +74,7 @@ net run_cmd_rev and2.1.out => lcec.0.8.dout-2
 
 
 #Do the spindle speed stuff
-net spd_cmd spindle.0.speed_out => scale.0.in
+net spd_cmd spindle.0.spindle_rpm => scale.0.in
 setp scale.0.offset 0
 setp scale.0.gain 0.00005 #20k max speed for a value of 1.
 net spindle_speed_scalar lcec.0.10.aout-0.value <= scale.0.out
