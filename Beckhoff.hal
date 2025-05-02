@@ -1,6 +1,8 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
 
+loadrt scale count=1
+addf scale.0 servo-thread
 loadrt not count=1
 addf not.0 servo-thread
 loadrt and2 count=2
