@@ -76,7 +76,7 @@ net run_cmd_rev and2.1.out => lcec.0.8.dout-2
 #Do the spindle speed stuff
 #net spindle.0.speed-out => rpm_analog.in    #THIS LINE IS IN SIM SPINDLE ENCODER
 setp rpm_analog.offset 0
-setp rpm_analog.gain 0.0001 #10k max speed for a value of 1.
+setp rpm_analog.gain 0.0000833 #10k max speed for a value of 1.
 setp lcec.0.10.aout-0-enable 1
 net spindle_speed_scalar lcec.0.10.aout-0-value <= rpm_analog.out
 
