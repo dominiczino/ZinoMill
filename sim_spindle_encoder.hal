@@ -25,7 +25,7 @@ net spindle-pos sim_spindle.position-fb => spindle.0.revs
 setp spindle_mass.gain .07
 
 # spindle speed control
-net spindle-speed-cmd  spindle.0.speed-out => limit_speed.in
+net spindle-speed-cmd  spindle.0.speed-out => limit_speed.in => rpm_analog.in
 net spindle-speed-limited limit_speed.out => sim_spindle.velocity-cmd spindle_mass.in
 
 # for spindle velocity estimate
