@@ -43,7 +43,7 @@ net spindle-at-speed near_speed.out spindle.0.at-speed
 addf limit_speed servo-thread
 addf spindle_mass servo-thread
 addf rpm_rps servo-thread
-addf rpm_analog
+addf rpm_analog servo-thread
 addf near_speed servo-thread
 addf sim_spindle servo-thread
 
