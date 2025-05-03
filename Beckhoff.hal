@@ -9,7 +9,7 @@ addf and2.1 servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
-#The homeing input EL2001 is slave #9
+#The homeing input EL2001 is slave #10
 
 #Defines the pins of the beckhoff module and what is driving them
 #Note the LCEC output numbers are NOT the same as the numbers on the front of the beckhoff module !!!
@@ -26,12 +26,12 @@ net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
 #This sets up all the homing pins. Not the LCEC output numbers are NOT the same as the numbers on the front of the beckhoff module !!!
-net J0homesw lcec.0.9.din-7-not => homeEdgeJ0.in
-net J1homesw lcec.0.9.din-4      => homeEdgeJ1.in
-net J2homesw lcec.0.9.din-5      => homeEdgeJ2.in
-net J3homesw lcec.0.9.din-6-not => homeEdgeJ3.in
-#net J4homesw lcec.0.9.din-x-not => homeEdgeJ4.in
-#net J5homesw lcec.0.9.din-x-not => homeEdgeJ5.in
+net J0homesw lcec.0.10.din-7-not => homeEdgeJ0.in
+net J1homesw lcec.0.10.din-4      => homeEdgeJ1.in
+net J2homesw lcec.0.10.din-5      => homeEdgeJ2.in
+net J3homesw lcec.0.10.din-6-not => homeEdgeJ3.in
+#net J4homesw lcec.0.10.din-x-not => homeEdgeJ4.in
+#net J5homesw lcec.0.10.din-x-not => homeEdgeJ5.in
 
 net homeSwTriggerJ0 homeEdgeJ0.out => homeLatchJ0.fault-in
 net homeSwTriggerJ1 homeEdgeJ1.out => homeLatchJ1.fault-in
@@ -77,7 +77,7 @@ net run_cmd_rev and2.1.out => lcec.0.8.dout-2
 #net spindle.0.speed-out => rpm_analog.in    #THIS LINE IS IN SIM SPINDLE ENCODER
 setp rpm_analog.offset 0
 setp rpm_analog.gain 0.0000833 #10k max speed for a value of 1.
-setp lcec.0.10.aout-0-enable 1
-net spindle_speed_scalar lcec.0.10.aout-0-value <= rpm_analog.out
+setp lcec.0.9.aout-0-enable 1
+net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 
-#net Spindle_OK lcec.0.9.din0 => motion.spindle.0.at-speed
+#net Spindle_OK lcec.0.10.din0 => motion.spindle.0.at-speed
