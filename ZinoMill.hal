@@ -178,7 +178,7 @@ setp indexEdgeJ0.out-width-ns 5000000
 ########################################################################################################################
 
 setp cia402.1.csp-mode 1
-setp cia402.1.pos-scale 869046
+setp cia402.1.pos-scale -869046
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net y1-statusword lcec.0.1.cia-statusword => cia402.1.statusword
@@ -216,7 +216,7 @@ setp indexEdgeJ1.out-width-ns 5000000
 ########################################################################################################################
 
 setp cia402.2.csp-mode 1
-setp cia402.2.pos-scale 869046
+setp cia402.2.pos-scale -869046
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net y2-statusword lcec.0.2.cia-statusword => cia402.2.statusword
