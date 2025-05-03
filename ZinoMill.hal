@@ -141,7 +141,7 @@ setp lcec.0.5.probe-word 23
 
 #Setting up the X Axis Servo
 setp cia402.0.csp-mode 1
-setp cia402.0.pos-scale -749254
+setp cia402.0.pos-scale -1331692
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net x-statusword lcec.0.0.cia-statusword => cia402.0.statusword
@@ -178,7 +178,7 @@ setp indexEdgeJ0.out-width-ns 5000000
 ########################################################################################################################
 
 setp cia402.1.csp-mode 1
-setp cia402.1.pos-scale -869046
+setp cia402.1.pos-scale -1331692
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net y1-statusword lcec.0.1.cia-statusword => cia402.1.statusword
@@ -216,7 +216,7 @@ setp indexEdgeJ1.out-width-ns 5000000
 ########################################################################################################################
 
 setp cia402.2.csp-mode 1
-setp cia402.2.pos-scale -869046
+setp cia402.2.pos-scale -1331692
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net y2-statusword lcec.0.2.cia-statusword => cia402.2.statusword
@@ -254,7 +254,7 @@ setp indexEdgeJ2.out-width-ns 5000000
 
 #Setting up the Z Axis Servo
 setp cia402.3.csp-mode 1
-setp cia402.3.pos-scale -869046
+setp cia402.3.pos-scale -1183726
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net z-statusword lcec.0.3.cia-statusword => cia402.3.statusword
