@@ -291,7 +291,7 @@ setp indexEdgeJ3.out-width-ns 5000000
 
 #Setting up the A Axis Servo
 setp cia402.4.csp-mode 1
-setp cia402.4.pos-scale 58254
+setp cia402.4.pos-scale -58254
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net a-statusword lcec.0.4.cia-statusword => cia402.4.statusword
