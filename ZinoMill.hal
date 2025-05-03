@@ -141,7 +141,7 @@ setp lcec.0.5.probe-word 23
 
 #Setting up the X Axis Servo
 setp cia402.0.csp-mode 1
-setp cia402.0.pos-scale -1000000
+setp cia402.0.pos-scale -749254
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net x-statusword lcec.0.0.cia-statusword => cia402.0.statusword
@@ -329,7 +329,7 @@ setp indexEdgeJ4.out-width-ns 5000000
 
 #Setting up the C Axis Servo
 setp cia402.5.csp-mode 1
-setp cia402.5.pos-scale 869046
+setp cia402.5.pos-scale 1000000
 
 #All the stuff where the ethercat drive needs to inform the CIA402 layer of what's going on
 net c-statusword lcec.0.5.cia-statusword => cia402.5.statusword
