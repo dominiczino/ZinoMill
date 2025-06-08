@@ -124,6 +124,12 @@ setp lcec.0.4.probe-word 23
 setp lcec.0.5.probe-word 23
 
 
+########################################################################################################################
+#################################  How the Hell does Homing Work!?  ####################################################
+########################################################################################################################
+
+
+
 
 
 
@@ -132,6 +138,10 @@ setp lcec.0.5.probe-word 23
 
 ######      The Ethercat wiring order is 012345 --> XYYZAC
 ######      Then 6 onwards is the Beckhoff I/O Modules
+
+
+
+
 
 
 
@@ -369,6 +379,7 @@ loadusr -W hal_manualtoolchange
 net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change 
 net tool-prep-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number 
 net tool-changed hal_manualtoolchange.changed => iocontrol.0.tool-changed
+net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 
 
 
