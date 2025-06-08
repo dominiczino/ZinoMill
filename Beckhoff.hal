@@ -71,7 +71,7 @@ net run_cmd_rev spindleReverseAND.out => lcec.0.8.dout-2
 #Drawbar interlock (forbid releasing the drawbar if the spindle is spinning)
 #This does not require an actual tool change to have been requested to trigger the tool change operation (i.e. you don't NEED to use the MDI)
 net spindleStopped spindleRunningNOT.out => spindleDrawbarInterlockAND.in0
-net lcec.0.10.din-1 => spindleDrawbarInterlockAND.in1 #This is the tool change pushbutton
+net drawbarRequested lcec.0.10.din-1 => spindleDrawbarInterlockAND.in1 #This is the tool change pushbutton
 
 #Do the spindle speed stuff
 #net spindle.0.speed-out => rpm_analog.in    #THIS LINE IS IN SIM SPINDLE ENCODER
