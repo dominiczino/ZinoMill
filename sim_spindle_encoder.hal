@@ -21,7 +21,7 @@ net spindle-index-enable spindle.0.index-enable <=> sim_spindle.index-enable
 # report our revolution count to the motion controller
 net spindle-pos sim_spindle.position-fb => spindle.0.revs
 
-# simulate spindle mass
+# simulate spindle mass (what??)
 setp spindle_mass.gain .07
 
 # spindle speed control

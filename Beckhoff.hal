@@ -1,11 +1,14 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
 
-loadrt not count=1
-addf not.0 servo-thread
-loadrt and2 count=2
-addf and2.0 servo-thread
-addf and2.1 servo-thread
+loadrt not names=spindleReverseNOT,spindleRunningNOT
+addf spindleReverseNOT servo-thread
+addf spindleRunningNOT servo-thread
+
+loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND
+addf spindleForwardAND servo-thread
+addf spindleReverseAND servo-thread
+addf spindleDrawbarInterlockAND servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
@@ -15,12 +18,14 @@ addf and2.1 servo-thread
 #Note the LCEC output numbers are NOT the same as the numbers on the front of the beckhoff module !!!
 net Solenoid0 lcec.0.7.dout-0 <= iocontrol.0.coolant-mist    #Coolant I,  M7
 net Solenoid1 lcec.0.7.dout-2 <= iocontrol.0.coolant-flood   #Coolant II, M8
-net Solenoid2 lcec.0.7.dout-4 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
-net Solenoid3 lcec.0.7.dout-6 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
-net Solenoid4 lcec.0.7.dout-1                                #Toolsetter purge
-net Solenoid5 lcec.0.7.dout-3                                #Drawbar Release
+net spindleDrawbar lcec.0.7.dout-5 <= spindleDrawbarInterlockAND.out
+
+#net Solenoid2 lcec.0.7.dout-4 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
+#net Solenoid3 lcec.0.7.dout-6 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
+#net Solenoid4 lcec.0.7.dout-1                                #Toolsetter purge
+#net Solenoid5 lcec.0.7.dout-3                                #Drawbar Release
 #net Solenoid6 lcec.0.7.dout-5 <= spindle.0.on               #Spindle Purge, turn on any time the spindle is running. Actually on the lower line
-net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
+#net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
 
 
 
@@ -56,22 +61,17 @@ setp homeEdgeJ5.out-width-ns 5000000
 
 
 
+#Spindle forward and reverse output pins
+net spindle_Run spindleForwardAND.in0 <= spindle.0.on => spindleReverseAND.in0 => spindleRunningNOT.in
+net spindle_Dir spindleReverseAND.in1 <= spindle.0.reverse => spindleReverseNOT.in
+net spindle_Dir_Not spindleReverseNOT.out => spindleForwardAND.in1
+net run_cmd_fwd spindleForwardAND.out => lcec.0.8.dout-0
+net run_cmd_rev spindleReverseAND.out => lcec.0.8.dout-2
 
-
-
-#Set the spindle direction pin to NOT(reverse)
-#net spindle_Dir not.0.in <= spindle.0.reverse
-#Defines pins for the spindle control
-#net Spindle_Run lcec.0.8.dout-0 <= spindle.0.on => lcec.0.7.dout-5
-#net Spindle_Dir lcec.0.8.dout-2 <= not.0.out
-
-net spindle_Run and2.0.in0 <= spindle.0.on => and2.1.in0
-net spindle_Dir and2.1.in1 <= spindle.0.reverse => not.0.in
-net spindle_Dir_Not not.0.out => and2.0.in1
-net run_cmd_fwd and2.0.out => lcec.0.8.dout-0
-net run_cmd_rev and2.1.out => lcec.0.8.dout-2
-
-
+#Drawbar interlock (forbid releasing the drawbar if the spindle is spinning)
+#This does not require an actual tool change to have been requested to trigger the tool change operation (i.e. you don't NEED to use the MDI)
+net spindleStopped spindleRunningNOT.out => spindleDrawbarInterlockAND.in0
+net lcec.0.10.din-1 => spindleDrawbarInterlockAND.in1 #This is the tool change pushbutton
 
 #Do the spindle speed stuff
 #net spindle.0.speed-out => rpm_analog.in    #THIS LINE IS IN SIM SPINDLE ENCODER
@@ -80,4 +80,4 @@ setp rpm_analog.gain 0.0000833 #10k max speed for a value of 1.
 setp lcec.0.9.aout-0-enable 1
 net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 
-#net Spindle_OK lcec.0.10.din0 => motion.spindle.0.at-speed
+#net Spindle_OK lcec.0.10.din0 => motion.spindle.0.at-speed I think this was broken in some way by the sim spindle encoder, but I needed it??

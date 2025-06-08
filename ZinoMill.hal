@@ -361,6 +361,18 @@ setp indexEdgeJ5.both TRUE
 setp indexEdgeJ5.out-width-ns 5000000
 
 
+########################################################################################################################
+#################################         Tool Changes       ###########################################################
+########################################################################################################################
+
+loadusr -W hal_manualtoolchange
+net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change 
+net tool-prep-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number 
+net tool-changed hal_manualtoolchange.changed => iocontrol.0.tool-changed
+
+
+
+
 
 ########################################################################################################################
 #################################      Simulation Zone       ###########################################################
@@ -372,5 +384,6 @@ setp indexEdgeJ5.out-width-ns 5000000
 net estop-loop iocontrol.0.user-enable-out => iocontrol.0.emc-enable-in
 
 # create signals for tool loading loopback
-net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
-net tool-change-loop iocontrol.0.tool-change => iocontrol.0.tool-changed
+#net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
+#net tool-change-loop iocontrol.0.tool-change => iocontrol.0.tool-changed
+
