@@ -153,11 +153,12 @@ net feedOVRfactor feedOVRrapidSelector.out  => halui.feed-override.scale
 
 
 #Handling the EStop Button
-net panel_Estop lcec.0.12.din-2 => EStopNOT.in halui.estop.reset #EStopResetEdge.in
-#setp EStopResetEdge.in-edge FALSE #false means detect rising edges
-#setp EStopResetEdge.out-width-ns 100000
-#net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
-net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
+#net panel_Estop lcec.0.12.din-2 => EStopNOT.in halui.estop.reset #EStopResetEdge.in
+####setp EStopResetEdge.in-edge FALSE #false means detect rising edges
+####setp EStopResetEdge.out-width-ns 100000
+####net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
+#net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
+setp EStopAND.in0 TRUE
 net usrRequestEnable iocontrol.0.user-enable-out => EStopAND.in1
 net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in 
 
