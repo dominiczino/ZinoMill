@@ -21,7 +21,7 @@ loadrt mux2 names=feedOVRrapidSelector
 addf feedOVRrapidSelector servo-thread
 
 
-loadrt scale names=feedOVRscale
+loadrt scale names=feedOVRscale,rpm_rps,rpm_analog
 addf feedOVRscale servo-thread
 
 
