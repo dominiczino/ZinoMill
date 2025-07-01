@@ -12,6 +12,18 @@ addf spindleReverseAND servo-thread
 addf spindleDrawbarInterlockAND servo-thread
 addf EStopAND servo-thread
 
+	
+loadrt tristate_float names=feedOVRcomp,rapidOVRcomp
+addf feedOVRcomp servo-thread
+addf rapidOVRcomp servo-thread
+
+loadrt mux2 names=feedOVRrapidSelector
+addf feedOVRrapidSelector servo-thread
+
+
+loadrt scale names=feedOVRscale
+addf feedOVRscale servo-thread
+
 
 #Ethercat slave mapping:
 #7:  EL2008 Output for Pneumatics
@@ -119,7 +131,25 @@ net jog_IV_Neg lcec.0.13.din-1 => halui.axis.a.minus
 net jog_V_Pos lcec.0.12.din-0 => halui.axis.c.plus
 net jog_V_Neg lcec.0.12.din-4 => halui.axis.c.minus
 
-net jog_rapid lcec.0.13.din-2 
+
+net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel
+setp feedOVRrapidSelector.in0 1
+setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is when the rapid button is pressed
+
+
+setp feedOVRscale.in 100 #The potentiometer input should go here I think
+net feedOVRrapidSelector.out => feedOVRscale.gain
+setp feedOVRscale.offset 0
+net feedOVR feedOVRscale.out => halui.feed-override.counts
+setp halui.feed-override.count-enable TRUE
+setp halui.feed-override.direct-value TRUE
+setp halui.feed-override.scale 1 #This calibrates whatever the potentiometer value ranges are
+
+setp spindleOVRscale.in => halui.spindle.0.override.counts
+setp halui.spindle.0.override.count-enable TRUE
+setp halui.spindle.0.override.direct-value TRUE
+setp halui.spindle.0.override.scale 1 #This calibrates whatever the potentiometer value ranges are
+
 
 
 #Handling the EStop Button
