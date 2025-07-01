@@ -138,7 +138,7 @@ setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is w
 
 
 setp feedOVRscale.in 100 #The potentiometer input should go here I think
-net feedOVRrapidSelector.out => feedOVRscale.gain
+net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
 setp feedOVRscale.offset 0
 net feedOVR feedOVRscale.out => halui.feed-override.counts
 setp halui.feed-override.count-enable TRUE
