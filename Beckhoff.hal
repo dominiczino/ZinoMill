@@ -145,10 +145,10 @@ setp halui.feed-override.count-enable TRUE
 setp halui.feed-override.direct-value TRUE
 net feedOVRfactor feedOVRrapidSelector.out  => halui.feed-override.scale
 
-setp spindleOVRscale.in => halui.spindle.0.override.counts
-setp halui.spindle.0.override.count-enable TRUE
-setp halui.spindle.0.override.direct-value TRUE
-setp halui.spindle.0.override.scale 1 #This calibrates whatever the potentiometer value ranges are
+#net spindleOVRscale.out => halui.spindle.0.override.counts
+#setp halui.spindle.0.override.count-enable TRUE
+#setp halui.spindle.0.override.direct-value TRUE
+#setp halui.spindle.0.override.scale 1 #This calibrates whatever the potentiometer value ranges are
 
 
 
