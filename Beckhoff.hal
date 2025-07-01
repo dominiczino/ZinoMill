@@ -1,18 +1,22 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
 
-loadrt not names=spindleReverseNOT,spindleRunningNOT
+loadrt not names=spindleReverseNOT,spindleRunningNOT,EStopNOT
 addf spindleReverseNOT servo-thread
 addf spindleRunningNOT servo-thread
+addf EStopNOT servo-thread
 
-loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND
+loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND
 addf spindleForwardAND servo-thread
 addf spindleReverseAND servo-thread
 addf spindleDrawbarInterlockAND servo-thread
+addf EStopAND servo-thread
 
 #Normally the Beckhoff EL2008 for the pneumatics is ethercat slave #7
 #The second EL2008 is slave #8
 #The homeing input EL2001 is slave #10
+# The second coupler is slave #11
+# The control panel input units are slaves 12, 13, and 14
 
 #Defines the pins of the beckhoff module and what is driving them
 #Note the LCEC output numbers are NOT the same as the numbers on the front of the beckhoff module !!!
@@ -81,3 +85,43 @@ setp lcec.0.9.aout-0-enable 1
 net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 
 #net Spindle_OK lcec.0.10.din0 => motion.spindle.0.at-speed I think this was broken in some way by the sim spindle encoder, but I needed it??
+
+
+########################################################################################################################
+#################################     Control Panel I/O       ##########################################################
+########################################################################################################################
+
+
+
+
+net jog_X_Pos lcec.0.13.din-4 => halui.axis.x.plus
+net jog_X_Neg lcec.0.13.din-0 => halui.axis.x.minus
+net jog_Y_Pos lcec.0.12.din-1 => halui.axis.y.plus
+net jog_Y_Neg lcec.0.13.din-5 => halui.axis.y.minus
+net jog_Z_Pos lcec.0.12.din-3 => halui.axis.z.plus
+net jog_Z_Neg lcec.0.13.din-3 => halui.axis.z.minus
+net jog_IV_Pos lcec.0.12.din-5 => halui.axis.a.plus
+net jog_IV_Neg lcec.0.13.din-1 => halui.axis.a.minus
+net jog_V_Pos lcec.0.12.din-0 => halui.axis.c.plus
+net jog_V_Neg lcec.0.12.din-4 => halui.axis.c.minus
+
+net jog_rapid lcec.0.13.din-2 
+
+
+
+
+#Handling the EStop Button
+
+net panel_Estop lcec.0.12.din-2 => EStopNOT.in EStopResetEdge.in
+setp EStopResetEdge.both TRUE
+setp EStopResetEdge.out-width-ns 5000000
+net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
+net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
+net usrRequestEnable iocontrol.0.user-enable-out => EStopAND.in1
+net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in 
+
+
+#Other Buttons
+net panel_cycle_start lcec.0.12.din-7 => halui.program.resume halui.program.run halui.program.step
+net panel_feed_hold lcec.0.12.din-6 => halui.program.pause
+

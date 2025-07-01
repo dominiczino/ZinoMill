@@ -279,6 +279,10 @@
     <slave idx="8" type="EL2008"/>
     <slave idx="9" type="EL4022"/>
     <slave idx="10" type="EL1008"/>
+    <slave idx="11" type="EK1100"/>
+    <slave idx="12" type="EL1008"/>
+    <slave idx="13" type="EL1008"/>
+    <slave idx="14" type="EL2008"/>
   </master>
 </masters>
 

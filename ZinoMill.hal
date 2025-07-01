@@ -20,8 +20,8 @@ loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_c
 loadrt hypot names=vel_xy,vel_xyz
 
 #Load the signal processing needed for homing. I know, it's a lot
-loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5
-loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5
+loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5,EStopResetEdge
+loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5,EStopResetEdge
 loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5
 
 # add everything to servo thread
@@ -383,16 +383,11 @@ net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 
 
 
-
-
 ########################################################################################################################
 #################################      Simulation Zone       ###########################################################
 ########################################################################################################################
 
-# estop loopback
-#Normally emc-enable-in would be the result of an AND between user-enable-out and an I/O read from the E-stop circuit.
-#Additionally the E-stop should also kill servo power directly, of course
-net estop-loop iocontrol.0.user-enable-out => iocontrol.0.emc-enable-in
+
 
 # create signals for tool loading loopback
 #net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
