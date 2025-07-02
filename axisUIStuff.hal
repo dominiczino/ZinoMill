@@ -1,1 +1,1 @@
-net panel_feed_hold axisui.notifications-clear
+net panel_feed_hold axisui.notifications-clear halui.estop.reset

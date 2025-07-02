@@ -159,7 +159,7 @@ net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 setp jog_rate_selector.in0 1
 setp jog_rate_selector.in1 2
 setp jog_rate_selector.in2 7.5
-setp jog_rate_selector.in3 15
+setp jog_rate_selector.in3 20
 
 net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 
