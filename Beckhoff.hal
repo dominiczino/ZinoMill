@@ -157,7 +157,7 @@ setp jog_rate_selector.in1 2
 setp jog_rate_selector.in2 750
 setp jog_rate_selector.in3 1500
 
-net jog_speed_scale.out => halui.axis.jog-speed
+net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 
 
 #################################################
