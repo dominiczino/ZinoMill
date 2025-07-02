@@ -153,8 +153,8 @@ net jog_rotary_active jog_rate_OR.out => jog_rate_selector.sel1
 
 
 setp jog_speed_scale.offset 0
-setp jog_speed_scale.in 100 #Basically 100in/min is a good starting point. This should come from the potentiometer though.
-net jog_rate_selctor.out => jog_speed_scale.gain
+setp jog_speed_scale.in 100.0 #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jog_rate_selector.out => jog_speed_scale.gain
 
 setp jog_rate_selector.in0 1
 setp jog_rate_selector.in1 2
