@@ -203,5 +203,5 @@ net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in
 
 #Other Buttons
 net panel_cycle_start lcec.0.12.din-7 => halui.program.resume halui.program.run halui.program.step
-net panel_feed_hold lcec.0.12.din-6 => halui.program.pause halui.abort axisui.notifications-clear
+net panel_feed_hold lcec.0.12.din-6 => halui.program.pause halui.abort 
 
