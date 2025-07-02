@@ -37,8 +37,8 @@ net Cpos => comp_j5.in0
 #setp comp_j1.hyst .02
 #setp comp_j2.hyst .02
 #setp comp_j3.hyst .02
-setp comp_j4.hyst .02
-setp comp_j5.hyst .02
+setp comp_j4.hyst .5
+setp comp_j5.hyst .5
 
 #net J0homesw <= comp_j0.out => homeEdgeJ0.in
 #net J1homesw <= comp_j1.out => homeEdgeJ1.in
