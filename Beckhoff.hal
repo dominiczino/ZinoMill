@@ -20,9 +20,13 @@ addf rapidOVRcomp servo-thread
 loadrt mux2 names=feedOVRrapidSelector
 addf feedOVRrapidSelector servo-thread
 
+loadrt mux4 names=jog_rate_selector
+addf jog_rate_selector servo-thread
 
-loadrt scale names=feedOVRscale,rpm_rps,rpm_analog
+
+loadrt scale names=feedOVRscale,jog_speed_scale,rpm_rps,rpm_analog
 addf feedOVRscale servo-thread
+addf jog_speed_scale servo-thread
 
 
 
@@ -128,32 +132,58 @@ net jog_Y_Pos lcec.0.12.din-1 => halui.axis.y.plus
 net jog_Y_Neg lcec.0.13.din-5 => halui.axis.y.minus
 net jog_Z_Pos lcec.0.12.din-3 => halui.axis.z.plus
 net jog_Z_Neg lcec.0.13.din-3 => halui.axis.z.minus
-net jog_IV_Pos lcec.0.12.din-5 => halui.axis.a.plus
-net jog_IV_Neg lcec.0.13.din-1 => halui.axis.a.minus
-net jog_V_Pos lcec.0.12.din-0 => halui.axis.c.plus
-net jog_V_Neg lcec.0.12.din-4 => halui.axis.c.minus
+net jog_A_Pos lcec.0.12.din-5 => halui.axis.a.plus jog_A_rate_OR.in0
+net jog_A_Neg lcec.0.13.din-1 => halui.axis.a.minus jog_A_rate_OR.in1
+net jog_C_Pos lcec.0.12.din-0 => halui.axis.c.plus jog_C_rate_OR.in0
+net jog_C_Neg lcec.0.12.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
+
+net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
+
+#################################################
+##############   Jog Speed Settings   ###########
+#################################################
+
+net jog_A_active jog_A_rate_OR.out jog_rate_OR.in0
+net jog_C_active jog_C_rate_OR.out jog_rate_OR.in1
+net jog_rotary_active jog_rate_OR.out => jog_rate_selector.sel1
 
 
-net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel
+setp jog_speed_scale.offset 0
+setp jog_speed_scale.in 100 #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jog_rate_selctor.out => jog_speed_scale.gain
+
+setp jog_rate_selector.in0 1
+setp jog_rate_selector.in1 2
+setp jog_rate_selector.in2 750
+setp jog_rate_selector.in3 1500
+
+net jog_speed_scale.out => halui.axis.jog-speed
+
+
+#################################################
+##########   Feed Override Settings   ###########
+#################################################
+
 setp feedOVRrapidSelector.in0 1
 setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is when the rapid button is pressed
 
-
-setp feedOVRscale.in 100 #The potentiometer input should go here I think
-net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain halui.feed-override.scale
+setp feedOVRscale.in 100 #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
 setp feedOVRscale.offset 0
-net jogspd feedOVRscale.out => halui.axis.jog-speed
-
-
-setp halui.feed-override.counts 100 #potentiometer input here
+net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
+net feedOVRpercent feedOVRscale.out => halui.feed-override.counts
 setp halui.feed-override.count-enable TRUE
 setp halui.feed-override.direct-value TRUE
 
-#net spindleOVRscale.out => halui.spindle.0.override.counts
-#setp halui.spindle.0.override.count-enable TRUE
-#setp halui.spindle.0.override.direct-value TRUE
-#setp halui.spindle.0.override.scale 1 #This calibrates whatever the potentiometer value ranges are
 
+
+#################################################
+########   Spindle  Override Settings   #########
+#################################################
+
+setp halui.spindle.0.override.counts 100 #This would just be the potentiometer range, PERCENTAGE
+setp halui.spindle.0.override.count-enable TRUE
+setp halui.spindle.0.override.direct-value TRUE
+setp halui.spindle.0.override.scale 1 #calibration for the potentiometer
 
 
 #Handling the EStop Button
@@ -168,5 +198,5 @@ net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in
 
 #Other Buttons
 net panel_cycle_start lcec.0.12.din-7 => halui.program.resume halui.program.run halui.program.step
-net panel_feed_hold lcec.0.12.din-6 => halui.program.pause
+net panel_feed_hold lcec.0.12.din-6 => halui.program.pause halui.abort axisui.notifications-clear
 

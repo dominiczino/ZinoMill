@@ -22,7 +22,7 @@ loadrt hypot names=vel_xy,vel_xyz
 #Load the signal processing needed for homing. I know, it's a lot
 loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5,EStopResetEdge
 loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5
-loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5
+loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5,jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
 
 # add everything to servo thread
 addf motion-command-handler servo-thread
@@ -86,6 +86,9 @@ addf homeOrJ2 servo-thread
 addf homeOrJ3 servo-thread
 addf homeOrJ4 servo-thread
 addf homeOrJ5 servo-thread
+addf jog_A_rate_OR servo-thread
+addf jog_C_rate_OR servo-thread
+addf jog_rate_OR servo-thread
 
 addf homeLatchJ0 servo-thread
 addf homeLatchJ1 servo-thread
