@@ -32,6 +32,17 @@ loadrt conv_float_s32 names=conv_spindleOVR,conv_feedOVR
 addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
+loadrt encoder num_chan=1
+addf encoder.update-counters servo-thread
+addf encoder.update-position servo-thread
+
+loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
+addf handwheelXComp servo-thread
+addf handwheelYComp servo-thread
+addf handwheelZComp servo-thread
+addf handwheelAComp servo-thread
+addf handwheelCComp servo-thread
+
 
 
 #Ethercat slave mapping:
@@ -42,7 +53,7 @@ addf conv_feedOVR servo-thread
 #11: EK1100 Coupler for the control panel
 #12: EL1008 Input for control panel buttons
 #13: EL1008 Input for control panel buttons
-#14: EL???? ???? in control panel
+#14: EL3104 Analog input in control panel (used for encoder and the multi-position selectors)
 
 
 
@@ -143,6 +154,73 @@ net jog_C_Neg lcec.0.12.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
 
 net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
+net handwheelA_raw lcec.0.14.ch1-val => handwheelA_comp.in1
+net handwheelB_raw lcec.0.14.ch2-val => handwheelB_comp.in1
+
+addf handwheelA_comp servo-thread
+addf handwheelB_comp servo-thread
+
+
+#################################################
+###########   Handwheel Axis Selector   #########
+#################################################
+
+net handwheelAxisSelector lcec.0.14.ch3-val
+net handwheelAxisSelector handwheelXComp.in
+net handwheelAxisSelector handwheelYComp.in
+net handwheelAxisSelector handwheelZComp.in
+net handwheelAxisSelector handwheelAComp.in
+net handwheelAxisSelector handwheelCComp.in
+
+setp handwheelXComp.min 10
+setp handwheelXComp.max 20
+setp handwheelYComp.min 20
+setp handwheelYComp.max 30
+setp handwheelZComp.min 30
+setp handwheelZComp.max 40
+setp handwheelAComp.min 40
+setp handwheelAComp.max 50
+setp handwheelCComp.min 50
+setp handwheelCComp.max 60
+
+net handwheelXSelected handwheelXComp.out => axis.x.jog-enable
+net handwheelYSelected handwheelYComp.out => axis.y.jog-enable
+net handwheelZSelected handwheelZComp.out => axis.z.jog-enable
+net handwheelASelected handwheelAComp.out => axis.a.jog-enable
+net handwheelCSelected handwheelCComp.out => axis.c.jog-enable
+
+
+#################################################
+#################    Handwheel   ################
+#################################################
+
+net handwheelThreshold handwheelA_comp.in0 handwheelB_comp.in0
+setp handwheelThreshold 10000 ##This line should be the threshold between the on and off states.
+setp handwheelA_comp.hyst 1000
+setp handwheelB_comp.hyst 1000
+net handwheelA handwheelA_comp.out => encoder.0.phase-A
+net handwheelB handwheelB_comp.out => encoder.0.phase-B
+setp encoder.0.x4-mode FALSE
+
+net handwheelCounts encoder.0.counts
+net handwheelCounts axis.x.jog-counts
+net handwheelCounts axis.y.jog-counts
+net handwheelCounts axis.z.jog-counts
+net handwheelCounts axis.a.jog-counts
+net handwheelCounts axis.c.jog-counts
+
+net jogIncrement => axis.x.jog-scale
+net jogIncrement => axis.y.jog-scale
+net jogIncrement => axis.z.jog-scale
+net jogIncrementRotary => axis.a.jog-scale
+net jogIncrementRotary => axis.c.jog-scale
+setp jogIncrement 0.001
+setp jogIncrementRotary 0.01
+
+
+
+
+
 #################################################
 ##############   Jog Speed Settings   ###########
 #################################################
@@ -150,7 +228,6 @@ net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 net jog_A_active jog_A_rate_OR.out jog_rate_OR.in0
 net jog_C_active jog_C_rate_OR.out jog_rate_OR.in1
 net jog_rotary_active jog_rate_OR.out => jog_rate_selector.sel1
-
 
 setp jog_speed_scale.offset 0
 setp jog_speed_scale.in 100.0 #Basically 100in/min is a good starting point. This should come from the potentiometer though.

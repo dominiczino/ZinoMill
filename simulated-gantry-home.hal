@@ -3,7 +3,7 @@
 #It only creates fake home switch signals based on current position
 
 
-loadrt comp names=comp_j0,comp_j1,comp_j2,comp_j3,comp_j4,comp_j5
+loadrt comp names=comp_j0,comp_j1,comp_j2,comp_j3,comp_j4,comp_j5,handwheelA_comp,handwheelB_comp
 
 # Joint 0 = X axis, home switch is on negative end
 # Joint 1 = Y1 axis, home switch is on negative end
