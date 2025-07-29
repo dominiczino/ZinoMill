@@ -284,10 +284,10 @@
     <slave idx="14" type="generic" vid="00000002" pid="0c203052" configPdos="true">
       <syncManager idx="3" dir="in">
         <pdo idx="1a01">
-          <pdoEntry idx="6000" subIdx="11" bitLen="16" halPin="ch1-val" halType="u32"/>
+          <pdoEntry idx="6000" subIdx="11" bitLen="16" halPin="ch1-val" halType="float"/>
         </pdo>
         <pdo idx="1a03">
-          <pdoEntry idx="6010" subIdx="11" bitLen="16" halPin="ch2-val" halType="u32"/>
+          <pdoEntry idx="6010" subIdx="11" bitLen="16" halPin="ch2-val" halType="float"/>
         </pdo>
         <pdo idx="1a05">
           <pdoEntry idx="6020" subIdx="11" bitLen="16" halPin="ch3-val" halType="u32"/>
