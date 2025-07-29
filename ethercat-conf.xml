@@ -293,7 +293,7 @@
           <pdoEntry idx="6020" subIdx="11" bitLen="16" halPin="ch3-val" halType="float"/>
         </pdo>
         <pdo idx="1a07">
-          <pdoEntry idx="6030" subIdx="11" bitLen="16" halPin="ch4-val" halType="u32"/>
+          <pdoEntry idx="6030" subIdx="11" bitLen="16" halPin="ch4-val" halType="float"/>
         </pdo>
       </syncManager>
     </slave>
