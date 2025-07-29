@@ -215,8 +215,8 @@ net jogIncrement => axis.y.jog-scale
 net jogIncrement => axis.z.jog-scale
 net jogIncrementRotary => axis.a.jog-scale
 net jogIncrementRotary => axis.c.jog-scale
-setp jogIncrement 0.001
-setp jogIncrementRotary 0.01
+sets jogIncrement 0.001
+sets jogIncrementRotary 0.01
 
 
 
