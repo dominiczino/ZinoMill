@@ -172,16 +172,16 @@ net handwheelAxisSelector handwheelZComp.in
 net handwheelAxisSelector handwheelAComp.in
 net handwheelAxisSelector handwheelCComp.in
 
-setp handwheelXComp.min 10
-setp handwheelXComp.max 20
-setp handwheelYComp.min 20
-setp handwheelYComp.max 30
-setp handwheelZComp.min 30
-setp handwheelZComp.max 40
-setp handwheelAComp.min 40
-setp handwheelAComp.max 50
-setp handwheelCComp.min 50
-setp handwheelCComp.max 60
+setp handwheelXComp.min 10000
+setp handwheelXComp.max 14785
+setp handwheelYComp.min 14785
+setp handwheelYComp.max 18000
+setp handwheelZComp.min 18000
+setp handwheelZComp.max 23950
+setp handwheelAComp.min 23950
+setp handwheelAComp.max 30250
+setp handwheelCComp.min 30250
+setp handwheelCComp.max 33000
 
 net handwheelXSelected handwheelXComp.out => axis.x.jog-enable
 net handwheelYSelected handwheelYComp.out => axis.y.jog-enable
