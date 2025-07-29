@@ -194,8 +194,9 @@ net handwheelCSelected handwheelCComp.out => axis.c.jog-enable
 #################    Handwheel   ################
 #################################################
 
-net handwheelThreshold handwheelA_comp.in0 handwheelB_comp.in0
-setp handwheelThreshold 10000 ##This line should be the threshold between the on and off states.
+
+setp handwheelA_comp.in0 10000
+setp handwheelB_comp.in0 10000
 setp handwheelA_comp.hyst 1000
 setp handwheelB_comp.hyst 1000
 net handwheelA handwheelA_comp.out => encoder.0.phase-A
