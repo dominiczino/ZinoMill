@@ -33,8 +33,8 @@ addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
 loadrt encoder num_chan=1
-addf encoder.update-counters servo-thread
-addf encoder.update-position servo-thread
+addf encoder.0.update-counters servo-thread
+addf encoder.0.update-position servo-thread
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
 addf handwheelXComp servo-thread
