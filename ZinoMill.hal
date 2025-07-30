@@ -42,7 +42,7 @@ addf vel_xy servo-thread
 addf vel_xyz servo-thread
 
 addf lcec.read-all base-thread #ouch
-addf lcec.write-all servo-thread
+addf lcec.write-all base-thread
 
 addf cia402.0.read-all servo-thread
 addf cia402.0.write-all servo-thread
