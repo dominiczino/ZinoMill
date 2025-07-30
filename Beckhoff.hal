@@ -33,7 +33,7 @@ addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
 loadrt encoder num_chan=1
-addf encoder.update-counters base-thread
+addf encoder.update-counters servo-thread
 addf encoder.capture-position servo-thread
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
@@ -157,8 +157,8 @@ net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 net handwheelA_raw lcec.0.14.ch1-val => handwheelA_comp.in1
 net handwheelB_raw lcec.0.14.ch2-val => handwheelB_comp.in1
 
-addf handwheelA_comp base-thread
-addf handwheelB_comp base-thread
+addf handwheelA_comp servo-thread
+addf handwheelB_comp servo-thread
 
 
 #################################################
