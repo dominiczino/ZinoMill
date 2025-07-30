@@ -2,7 +2,7 @@ loadrt [KINS]KINEMATICS
 show comp
 
 # motion controller, get name and thread periods from INI file
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD base_period_nsec=[EMCMOT]BASE_PERIOD num_joints=[KINS]JOINTS
 
 
 #Setting up Ethercat stuff
