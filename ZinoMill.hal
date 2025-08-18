@@ -20,9 +20,12 @@ loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_c
 loadrt hypot names=vel_xy,vel_xyz
 
 #Load the signal processing needed for homing. I know, it's a lot
-loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5,EStopResetEdge
-loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5
-loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5,jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
+#loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5,EStopResetEdge
+#loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5
+#loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5,jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
+
+loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,EStopResetEdge
+loadrt or2 names=jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
 loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder,handwheelEncoder
 
 # add everything to servo thread
@@ -42,7 +45,7 @@ addf ddt_cv servo-thread
 addf vel_xy servo-thread
 addf vel_xyz servo-thread
 
-addf lcec.read-all servo-thread #ouch
+addf lcec.read-all servo-thread 
 addf lcec.write-all servo-thread
 
 addf cia402.0.read-all servo-thread
@@ -72,31 +75,32 @@ addf indexEdgeJ3 servo-thread
 addf indexEdgeJ4 servo-thread
 addf indexEdgeJ5 servo-thread
 
-addf homeEdgeJ0 servo-thread
-addf homeEdgeJ1 servo-thread
-addf homeEdgeJ2 servo-thread
-addf homeEdgeJ3 servo-thread
-addf homeEdgeJ4 servo-thread
-addf homeEdgeJ5 servo-thread
+# addf homeEdgeJ0 servo-thread
+# addf homeEdgeJ1 servo-thread
+# addf homeEdgeJ2 servo-thread
+# addf homeEdgeJ3 servo-thread
+# addf homeEdgeJ4 servo-thread
+# addf homeEdgeJ5 servo-thread
 
 addf EStopResetEdge servo-thread
 
-addf homeOrJ0 servo-thread
-addf homeOrJ1 servo-thread
-addf homeOrJ2 servo-thread
-addf homeOrJ3 servo-thread
-addf homeOrJ4 servo-thread
-addf homeOrJ5 servo-thread
+# addf homeOrJ0 servo-thread
+# addf homeOrJ1 servo-thread
+# addf homeOrJ2 servo-thread
+# addf homeOrJ3 servo-thread
+# addf homeOrJ4 servo-thread
+# addf homeOrJ5 servo-thread
+
 addf jog_A_rate_OR servo-thread
 addf jog_C_rate_OR servo-thread
 addf jog_rate_OR servo-thread
 
-addf homeLatchJ0 servo-thread
-addf homeLatchJ1 servo-thread
-addf homeLatchJ2 servo-thread
-addf homeLatchJ3 servo-thread
-addf homeLatchJ4 servo-thread
-addf homeLatchJ5 servo-thread
+# addf homeLatchJ0 servo-thread
+# addf homeLatchJ1 servo-thread
+# addf homeLatchJ2 servo-thread
+# addf homeLatchJ3 servo-thread
+# addf homeLatchJ4 servo-thread
+# addf homeLatchJ5 servo-thread
 
 addf encoder.update-counters servo-thread
 addf encoder.capture-position servo-thread
