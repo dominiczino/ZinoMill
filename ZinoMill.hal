@@ -98,23 +98,23 @@ addf homeLatchJ3 servo-thread
 addf homeLatchJ4 servo-thread
 addf homeLatchJ5 servo-thread
 
-addf J0encoder.update-counters servo-thread
-addf J0encoder.capture-position servo-thread
+addf encoder.update-counters servo-thread
+addf encoder.capture-position servo-thread
 
-addf J1encoder.update-counters servo-thread
-addf J1encoder.capture-position servo-thread
+# addf J1encoder.update-counters servo-thread
+# addf J1encoder.capture-position servo-thread
 
-addf J2encoder.update-counters servo-thread
-addf J2encoder.capture-position servo-thread
+# addf J2encoder.update-counters servo-thread
+# addf J2encoder.capture-position servo-thread
 
-addf J3encoder.update-counters servo-thread
-addf J3encoder.capture-position servo-thread
+# addf J3encoder.update-counters servo-thread
+# addf J3encoder.capture-position servo-thread
 
-addf J4encoder.update-counters servo-thread
-addf J4encoder.capture-position servo-thread
+# addf J4encoder.update-counters servo-thread
+# addf J4encoder.capture-position servo-thread
 
-addf J5encoder.update-counters servo-thread
-addf J5encoder.capture-position servo-thread
+# addf J5encoder.update-counters servo-thread
+# addf J5encoder.capture-position servo-thread
 
 
 
@@ -199,6 +199,7 @@ net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
 net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
 net J0-index indexEdgeJ0.out => J0encoder.phase-Z
 net J0-index-enable joint.0.index-enable <=> J0encoder.index-enable
+
 setp indexEdgeJ0.both TRUE
 setp indexEdgeJ0.out-width-ns 5000000
 
