@@ -184,9 +184,8 @@ net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
 net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
 net J0-index indexEdgeJ0.out => J0encoder.phase-Z
 net J0-index-enable joint.0.index-enable <=> J0encoder.index-enable
-
 setp indexEdgeJ0.both TRUE
-setp indexEdgeJ0.out-width-ns 5000000
+setp indexEdgeJ0.out-width-ns 50000000
 
 
 ########################################################################################################################
@@ -228,6 +227,8 @@ net y1-pos-fb => joint.1.motor-pos-fb ddt_y.in <= cia402.1.pos-fb
 net J1-probe-val lcec.0.1.probe-1-en => indexEdgeJ1.in
 net J1-index indexEdgeJ1.out => J1encoder.phase-Z
 net J1-index-enable joint.1.index-enable <=> J1encoder.index-enable
+setp indexEdgeJ1.both TRUE
+setp indexEdgeJ1.out-width-ns 50000000
 
 
 
@@ -270,6 +271,8 @@ net y2-pos-fb => joint.2.motor-pos-fb <= cia402.2.pos-fb
 net J2-probe-val lcec.0.2.probe-1-en => indexEdgeJ2.in
 net J2-index indexEdgeJ2.out => J2encoder.phase-Z
 net J2-index-enable joint.2.index-enable <=> J2encoder.index-enable
+setp indexEdgeJ2.both TRUE
+setp indexEdgeJ2.out-width-ns 50000000
 
 
 ########################################################################################################################
@@ -312,6 +315,8 @@ net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
 net J3-probe-val lcec.0.3.probe-1-en => indexEdgeJ3.in
 net J3-index indexEdgeJ3.out => J3encoder.phase-Z
 net J3-index-enable joint.3.index-enable <=> J3encoder.index-enable
+setp indexEdgeJ3.both TRUE
+setp indexEdgeJ3.out-width-ns 50000000
 
 ########################################################################################################################
 #################################      Joint 4 (A) Setup       #########################################################
@@ -353,6 +358,8 @@ net a-pos-fb => joint.4.motor-pos-fb ddt_a.in <= cia402.4.pos-fb
 net J4-probe-val lcec.0.4.probe-1-en => indexEdgeJ4.in
 net J4-index indexEdgeJ4.out => J4encoder.phase-Z
 net J4-index-enable joint.4.index-enable <=> J4encoder.index-enable
+setp indexEdgeJ4.both TRUE
+setp indexEdgeJ4.out-width-ns 50000000
 
 
 ########################################################################################################################
@@ -395,6 +402,8 @@ net c-pos-fb => joint.5.motor-pos-fb ddt_c.in <= cia402.5.pos-fb
 net J5-probe-val lcec.0.5.probe-1-en => indexEdgeJ5.in
 net J5-index indexEdgeJ5.out => J5encoder.phase-Z
 net J5-index-enable joint.5.index-enable <=> J5encoder.index-enable
+setp indexEdgeJ5.both TRUE
+setp indexEdgeJ5.out-width-ns 50000000
 
 
 ########################################################################################################################
