@@ -23,6 +23,7 @@ loadrt hypot names=vel_xy,vel_xyz
 loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,homeEdgeJ0,homeEdgeJ1,homeEdgeJ2,homeEdgeJ3,homeEdgeJ4,homeEdgeJ5,EStopResetEdge
 loadrt estop_latch names=homeLatchJ0,homeLatchJ1,homeLatchJ2,homeLatchJ3,homeLatchJ4,homeLatchJ5
 loadrt or2 names=homeOrJ0,homeOrJ1,homeOrJ2,homeOrJ3,homeOrJ4,homeOrJ5,jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
+loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder,handwheelEncoder
 
 # add everything to servo thread
 addf motion-command-handler servo-thread
@@ -97,6 +98,24 @@ addf homeLatchJ3 servo-thread
 addf homeLatchJ4 servo-thread
 addf homeLatchJ5 servo-thread
 
+addf J0encoder.update-counters servo-thread
+addf J0encoder.capture-position servo-thread
+
+addf J1encoder.update-counters servo-thread
+addf J1encoder.capture-position servo-thread
+
+addf J2encoder.update-counters servo-thread
+addf J2encoder.capture-position servo-thread
+
+addf J3encoder.update-counters servo-thread
+addf J3encoder.capture-position servo-thread
+
+addf J4encoder.update-counters servo-thread
+addf J4encoder.capture-position servo-thread
+
+addf J5encoder.update-counters servo-thread
+addf J5encoder.capture-position servo-thread
+
 
 
 ########################################################################################################################
@@ -169,11 +188,17 @@ net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
 net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
 
 #Set up the homing nightmare
+#net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
+#net J0-index indexEdgeJ0.out => homeOrJ0.in0
+#net J0-home-reset homeOrJ0.out => homeLatchJ0.reset
+#net J0-home-latch-val homeLatchJ0.fault-out => joint.0.home-sw-in
+#setp homeLatchJ0.ok-in TRUE
+#setp indexEdgeJ0.both TRUE
+#setp indexEdgeJ0.out-width-ns 5000000
+
 net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
-net J0-index indexEdgeJ0.out => homeOrJ0.in0
-net J0-home-reset homeOrJ0.out => homeLatchJ0.reset
-net J0-home-latch-val homeLatchJ0.fault-out => joint.0.home-sw-in
-setp homeLatchJ0.ok-in TRUE
+net J0-index indexEdgeJ0.out => J0encoder.phase-Z
+net J0-index-enable joint.0.index-enable <=> J0encoder.index-enable
 setp indexEdgeJ0.both TRUE
 setp indexEdgeJ0.out-width-ns 5000000
 

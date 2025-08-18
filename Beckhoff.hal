@@ -32,9 +32,10 @@ loadrt conv_float_s32 names=conv_spindleOVR,conv_feedOVR
 addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
-loadrt encoder num_chan=1
-addf encoder.update-counters servo-thread
-addf encoder.capture-position servo-thread
+#loadrt encoder num_chan=1
+#handwheelEncoder
+addf handwheelEncoder.update-counters servo-thread
+addf handwheelEncoder.capture-position servo-thread
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
 addf handwheelXComp servo-thread
@@ -78,7 +79,8 @@ net spindleDrawbar lcec.0.7.dout-5 <= spindleDrawbarInterlockAND.out
 ########################################################################################################################
 
 
-net J0homesw lcec.0.10.din-7-not => homeEdgeJ0.in
+#net J0homesw lcec.0.10.din-7-not => homeEdgeJ0.in
+net J0homesw lcec.0.10.din-7-not => joint.0.home-sw-in
 net J1homesw lcec.0.10.din-4      => homeEdgeJ1.in
 net J2homesw lcec.0.10.din-5      => homeEdgeJ2.in
 net J3homesw lcec.0.10.din-6-not => homeEdgeJ3.in
@@ -199,11 +201,11 @@ setp handwheelA_comp.in0 10000
 setp handwheelB_comp.in0 10000
 setp handwheelA_comp.hyst 1000
 setp handwheelB_comp.hyst 1000
-net handwheelA handwheelA_comp.out => encoder.0.phase-A
-net handwheelB handwheelB_comp.out => encoder.0.phase-B
-setp encoder.0.x4-mode FALSE
+net handwheelA handwheelA_comp.out => handwheelEncoder.phase-A
+net handwheelB handwheelB_comp.out => handwheelEncoder.phase-B
+setp handwheelEncoder.x4-mode FALSE
 
-net handwheelCounts encoder.0.counts
+net handwheelCounts handwheelEncoder.counts
 net handwheelCounts axis.x.jog-counts
 net handwheelCounts axis.y.jog-counts
 net handwheelCounts axis.z.jog-counts
