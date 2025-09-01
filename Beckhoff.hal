@@ -165,7 +165,7 @@ addf handwheelB_comp servo-thread
 ###########   Handwheel Axis Selector   #########
 #################################################
 
-net handwheelAxisSelector lcec.0.14.ch4-val
+net handwheelAxisSelector lcec.0.14.ch3-val
 net handwheelAxisSelector handwheelXComp.in
 net handwheelAxisSelector handwheelYComp.in
 net handwheelAxisSelector handwheelZComp.in
