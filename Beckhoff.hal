@@ -152,6 +152,9 @@ net jog_A_Neg lcec.0.13.din-1 => halui.axis.y.minus
 net jog_C_Pos lcec.0.12.din-0 => halui.axis.c.plus jog_C_rate_OR.in0
 net jog_C_Neg lcec.0.12.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
 
+net spindleStartButton lcec.0.13.din-6 => halui.spindle.0.start
+net spindleStopButton lcec.0.13.din-7 => halui.spindle.0.stop
+
 net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
 net handwheelA_raw lcec.0.14.ch1-val => handwheelA_comp.in1
