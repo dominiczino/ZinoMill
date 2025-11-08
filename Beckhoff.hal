@@ -1,10 +1,15 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
 
-loadrt not names=spindleReverseNOT,spindleRunningNOT,EStopNOT
+loadrt not names=spindleReverseNOT,spindleRunningNOT,EStopNOT,solenoid1_not,solenoid2_not,solenoid3_not,solenoid4_not,solenoid5_not
 addf spindleReverseNOT servo-thread
 addf spindleRunningNOT servo-thread
 addf EStopNOT servo-thread
+addf solenoid1_not servo-thread
+addf solenoid2_not servo-thread
+addf solenoid3_not servo-thread
+addf solenoid4_not servo-thread
+addf solenoid5_not servo-thread
 
 loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND
 addf spindleForwardAND servo-thread
@@ -45,15 +50,18 @@ addf handwheelCComp servo-thread
 
 
 
-#Ethercat slave mapping:
+#Ethercat slave mapping: 
 #7:  EL2008 Output for Pneumatics
-#8:  EL2008 Output for Spindle et al.
-#9:  EL???? Analog Output for Spindle Control
-#10: EL1008 Homing Input
-#11: EK1100 Coupler for the control panel
-#12: EL1008 Input for control panel buttons
-#13: EL1008 Input for control panel buttons
-#14: EL3104 Analog input in control panel (used for encoder and the multi-position selectors)
+#8:  EL2008 Output for Pneumatics and Spindle et al.
+#9:  EL4022 Analog Output for Spindle Control
+#10: EL1008 Digital Input, various
+#11: EL1008 Homing Input
+#12: EL2008 Relay Outputs
+#-----------------------------
+#13: EK1100 Coupler for operator panel
+#14: EL1008 Input for operator panel buttons
+#15: EL1008 Input for operator panel buttons
+#16: EL3104 Analog input in operator panel (used for encoder and the multi-position selectors)
 
 
 
@@ -62,15 +70,31 @@ addf handwheelCComp servo-thread
 #################################     Pneumatics I/O       #############################################################
 ########################################################################################################################
 
-net Solenoid0 lcec.0.7.dout-0 <= iocontrol.0.coolant-mist    #Coolant I,  M7
-net Solenoid1 lcec.0.7.dout-2 <= iocontrol.0.coolant-flood   #Coolant II, M8
-net spindleDrawbar lcec.0.7.dout-5 <= spindleDrawbarInterlockAND.out
-#net Solenoid2 lcec.0.7.dout-4 <= motion.digital-out-00       #A-Axis Brake, M64 P0 and M65 P0
-#net Solenoid3 lcec.0.7.dout-6 <= motion.digital-out-01       #C-Axis Brake, M64 P1 and M65 P1
-#net Solenoid4 lcec.0.7.dout-1                                #Toolsetter purge
-#net Solenoid5 lcec.0.7.dout-3                                #Drawbar Release
-#net Solenoid6 lcec.0.7.dout-5 <= spindle.0.on               #Spindle Purge, turn on any time the spindle is running. Actually on the lower line
-#net Solenoid7 lcec.0.7.dout-7                                #Tool Rack actuator
+#Spindle Drawbar
+net Solenoid1 <= spindleDrawbarInterlockAND.out
+net Solenoid1  => lcec.0.7-dout-0 => solenoid1_not.in
+net Solenoid1_inv lcec.0.7-dout-1 <= solenoid1_not.out
+
+#Spindle Purge Air
+net Solenoid2 <= spindle.0.on
+net Solenoid2  => lcec.0.7-dout-2 => solenoid2_not.in
+net Solenoid2_inv lcec.0.7-dout-3 <= solenoid2_not.out
+
+#Toolsetter Purge Air
+#net Solenoid3 <= ???
+net Solenoid3  => lcec.0.7-dout-4 => solenoid3_not.in
+net Solenoid3_inv lcec.0.7-dout-5 <= solenoid3_not.out
+
+#Tool Rack Actuator
+#net Solenoid4 <= ???
+net Solenoid4  => lcec.0.7-dout-6 => solenoid4_not.in
+net Solenoid4_inv lcec.0.7-dout-7 <= solenoid4_not.out
+
+#Something else
+#net Solenoid5 <= ???
+net Solenoid5  => lcec.0.8-dout-0 => solenoid5_not.in
+net Solenoid5_inv lcec.0.7-dout-1 <= solenoid5_not.out
+
 
 
 ########################################################################################################################
@@ -78,34 +102,12 @@ net spindleDrawbar lcec.0.7.dout-5 <= spindleDrawbarInterlockAND.out
 ########################################################################################################################
 
 
-net J0homesw lcec.0.10.din-7-not => joint.0.home-sw-in
-net J1homesw lcec.0.10.din-4      => joint.1.home-sw-in
-net J2homesw lcec.0.10.din-5      => joint.2.home-sw-in
-net J3homesw lcec.0.10.din-6-not => joint.3.home-sw-in
-#net J4homesw lcec.0.10.din-x-not => joint.4.home-sw-in
-#net J5homesw lcec.0.10.din-x-not => joint.5.home-sw-in
-
-# net homeSwTriggerJ0 homeEdgeJ0.out => homeLatchJ0.fault-in
-# net homeSwTriggerJ1 homeEdgeJ1.out => homeLatchJ1.fault-in
-# net homeSwTriggerJ2 homeEdgeJ2.out => homeLatchJ2.fault-in
-# net homeSwTriggerJ3 homeEdgeJ3.out => homeLatchJ3.fault-in
-# net homeSwTriggerJ4 homeEdgeJ4.out => homeLatchJ4.fault-in
-# net homeSwTriggerJ5 homeEdgeJ5.out => homeLatchJ5.fault-in
-
-# setp homeEdgeJ0.both TRUE
-# setp homeEdgeJ1.both TRUE
-# setp homeEdgeJ2.both TRUE
-# setp homeEdgeJ3.both TRUE
-# setp homeEdgeJ4.both TRUE
-# setp homeEdgeJ5.both TRUE
-
-# setp homeEdgeJ0.out-width-ns 5000000
-# setp homeEdgeJ1.out-width-ns 5000000
-# setp homeEdgeJ2.out-width-ns 5000000
-# setp homeEdgeJ3.out-width-ns 5000000
-# setp homeEdgeJ4.out-width-ns 5000000
-# setp homeEdgeJ5.out-width-ns 5000000
-
+net J0homesw lcec.0.11.din-7-not => joint.0.home-sw-in
+net J1homesw lcec.0.11.din-4     => joint.1.home-sw-in
+net J2homesw lcec.0.11.din-5     => joint.2.home-sw-in
+net J3homesw lcec.0.11.din-6-not => joint.3.home-sw-in
+net J4homesw lcec.0.11.din-2     => joint.4.home-sw-in
+#net J5homesw lcec.0.11.din-3 => joint.5.home-sw-in
 
 
 ########################################################################################################################
@@ -117,8 +119,11 @@ net J3homesw lcec.0.10.din-6-not => joint.3.home-sw-in
 net spindle_Run spindleForwardAND.in0 <= spindle.0.on => spindleReverseAND.in0 => spindleRunningNOT.in
 net spindle_Dir spindleReverseAND.in1 <= spindle.0.reverse => spindleReverseNOT.in
 net spindle_Dir_Not spindleReverseNOT.out => spindleForwardAND.in1
-net run_cmd_fwd spindleForwardAND.out => lcec.0.8.dout-0
-net run_cmd_rev spindleReverseAND.out => lcec.0.8.dout-2
+net run_cmd_fwd spindleForwardAND.out => lcec.0.8.dout-6 
+net run_cmd_rev spindleReverseAND.out => lcec.0.8.dout-7
+
+net spindle_Run => lcec.0.12.dout-1 #Also turn on the spindle fan if running
+
 
 #Drawbar interlock (forbid releasing the drawbar if the spindle is spinning)
 #This does not require an actual tool change to have been requested to trigger the tool change operation (i.e. you don't NEED to use the MDI)
@@ -141,24 +146,24 @@ net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 #################################     Control Panel I/O       ##########################################################
 ########################################################################################################################
 
-net jog_X_Pos lcec.0.13.din-4 => halui.axis.x.plus
-net jog_X_Neg lcec.0.13.din-0 => halui.axis.x.minus
-net jog_Y_Pos lcec.0.12.din-1 => halui.axis.a.plus jog_A_rate_OR.in0
-net jog_Y_Neg lcec.0.13.din-5 => halui.axis.a.minus jog_A_rate_OR.in1
-net jog_Z_Pos lcec.0.12.din-3 => halui.axis.z.plus
-net jog_Z_Neg lcec.0.13.din-3 => halui.axis.z.minus
-net jog_A_Pos lcec.0.12.din-5 => halui.axis.y.plus 
-net jog_A_Neg lcec.0.13.din-1 => halui.axis.y.minus 
-net jog_C_Pos lcec.0.12.din-0 => halui.axis.c.plus jog_C_rate_OR.in0
-net jog_C_Neg lcec.0.12.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
+net jog_X_Pos lcec.0.15.din-4 => halui.axis.x.plus
+net jog_X_Neg lcec.0.15.din-0 => halui.axis.x.minus
+net jog_Y_Pos lcec.0.14.din-1 => halui.axis.a.plus jog_A_rate_OR.in0
+net jog_Y_Neg lcec.0.15.din-5 => halui.axis.a.minus jog_A_rate_OR.in1
+net jog_Z_Pos lcec.0.14.din-3 => halui.axis.z.plus
+net jog_Z_Neg lcec.0.15.din-3 => halui.axis.z.minus
+net jog_A_Pos lcec.0.14.din-5 => halui.axis.y.plus 
+net jog_A_Neg lcec.0.15.din-1 => halui.axis.y.minus 
+net jog_C_Pos lcec.0.14.din-0 => halui.axis.c.plus jog_C_rate_OR.in0
+net jog_C_Neg lcec.0.14.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
 
-net spindleStartButton lcec.0.13.din-6 => halui.spindle.0.start
-net spindleStopButton lcec.0.13.din-7 => halui.spindle.0.stop
+net spindleStartButton lcec.0.15.din-6 => halui.spindle.0.start
+net spindleStopButton lcec.0.15.din-7 => halui.spindle.0.stop
 
-net jog_rapid lcec.0.13.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
+net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
-net handwheelA_raw lcec.0.14.ch1-val => handwheelA_comp.in1
-net handwheelB_raw lcec.0.14.ch2-val => handwheelB_comp.in1
+net handwheelA_raw lcec.0.16.ch1-val => handwheelA_comp.in1
+net handwheelB_raw lcec.0.16.ch2-val => handwheelB_comp.in1
 
 addf handwheelA_comp servo-thread
 addf handwheelB_comp servo-thread
@@ -168,7 +173,7 @@ addf handwheelB_comp servo-thread
 ###########   Handwheel Axis Selector   #########
 #################################################
 
-net handwheelAxisSelector lcec.0.14.ch3-val
+net handwheelAxisSelector lcec.0.16.ch3-val
 net handwheelAxisSelector handwheelXComp.in
 net handwheelAxisSelector handwheelYComp.in
 net handwheelAxisSelector handwheelZComp.in
@@ -273,16 +278,17 @@ setp halui.spindle.0.override.scale 1 #calibration for the potentiometer
 
 
 #Handling the EStop Button
-#net panel_Estop lcec.0.12.din-2 => EStopNOT.in halui.estop.reset #EStopResetEdge.in
-####setp EStopResetEdge.in-edge FALSE #false means detect rising edges
-####setp EStopResetEdge.out-width-ns 100000
-####net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
-#net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
+net panel_Estop lcec.0.14.din-2 => EStopNOT.in => halui.estop.reset #EStopResetEdge.in
+#setp EStopResetEdge.in-edge FALSE #false means detect rising edges
+#setp EStopResetEdge.out-width-ns 100000
+#net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
+net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
+
 setp EStopAND.in0 TRUE
 net usrRequestEnable iocontrol.0.user-enable-out => EStopAND.in1
 net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in 
 
 #Other Buttons
-net panel_cycle_start lcec.0.12.din-7 => halui.program.resume halui.program.run halui.program.step
-net panel_feed_hold lcec.0.12.din-6 => halui.program.pause halui.abort 
+net panel_cycle_start lcec.0.14.din-7 => halui.program.resume halui.program.run halui.program.step
+net panel_feed_hold lcec.0.14.din-6 => halui.program.pause halui.abort 
 
