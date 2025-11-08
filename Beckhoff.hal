@@ -37,9 +37,6 @@ loadrt conv_float_s32 names=conv_spindleOVR,conv_feedOVR
 addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
-#loadrt encoder num_chan=1
-#handwheelEncoder#addf handwheelEncoder.update-counters servo-thread
-#handwheelEncoder.capture-position servo-thread
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
 addf handwheelXComp servo-thread
@@ -47,6 +44,9 @@ addf handwheelYComp servo-thread
 addf handwheelZComp servo-thread
 addf handwheelAComp servo-thread
 addf handwheelCComp servo-thread
+
+loadrt logic names=isLinearActiveLogicGate personality=0x206
+addf isLinearActiveLogicGate servo-thread
 
 
 
@@ -142,31 +142,27 @@ net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 
 
 
-########################################################################################################################
-#################################     Control Panel I/O       ##########################################################
-########################################################################################################################
+##############################################################################################################
+#################################     Control Panel I/O       ################################################
+##############################################################################################################
 
-net jog_X_Pos lcec.0.15.din-4 => halui.axis.x.plus
-net jog_X_Neg lcec.0.15.din-0 => halui.axis.x.minus
-net jog_Y_Pos lcec.0.14.din-1 => halui.axis.a.plus jog_A_rate_OR.in0
-net jog_Y_Neg lcec.0.15.din-5 => halui.axis.a.minus jog_A_rate_OR.in1
-net jog_Z_Pos lcec.0.14.din-3 => halui.axis.z.plus
-net jog_Z_Neg lcec.0.15.din-3 => halui.axis.z.minus
-net jog_A_Pos lcec.0.14.din-5 => halui.axis.y.plus 
-net jog_A_Neg lcec.0.15.din-1 => halui.axis.y.minus 
-net jog_C_Pos lcec.0.14.din-0 => halui.axis.c.plus jog_C_rate_OR.in0
-net jog_C_Neg lcec.0.14.din-4 => halui.axis.c.minus jog_C_rate_OR.in1
+net jog_X_Pos lcec.0.15.din-4 => halui.axis.x.plus  => isLinearActiveLogicGate.in-00
+net jog_X_Neg lcec.0.15.din-0 => halui.axis.x.minus => isLinearActiveLogicGate.in-01
+net jog_Y_Pos lcec.0.14.din-1 => halui.axis.a.plus
+net jog_Y_Neg lcec.0.15.din-5 => halui.axis.a.minus
+net jog_Z_Pos lcec.0.14.din-3 => halui.axis.z.plus  => isLinearActiveLogicGate.in-02
+net jog_Z_Neg lcec.0.15.din-3 => halui.axis.z.minus => isLinearActiveLogicGate.in-03
+net jog_A_Pos lcec.0.14.din-5 => halui.axis.y.plus  => isLinearActiveLogicGate.in-04
+net jog_A_Neg lcec.0.15.din-1 => halui.axis.y.minus => isLinearActiveLogicGate.in-05
+net jog_C_Pos lcec.0.14.din-0 => halui.axis.c.plus
+net jog_C_Neg lcec.0.14.din-4 => halui.axis.c.minus
 
 net spindleStartButton lcec.0.15.din-6 => halui.spindle.0.start
 net spindleStopButton lcec.0.15.din-7 => halui.spindle.0.stop
 
 net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
-net handwheelA_raw lcec.0.16.ch1-val => handwheelA_comp.in1
-net handwheelB_raw lcec.0.16.ch2-val => handwheelB_comp.in1
 
-addf handwheelA_comp servo-thread
-addf handwheelB_comp servo-thread
 
 
 #################################################
@@ -202,6 +198,12 @@ net handwheelCSelected handwheelCComp.out => axis.c.jog-enable
 #################    Handwheel   ################
 #################################################
 
+#Conditioning the phase data, binarizing it, and passing to encoder comp.
+net handwheelA_raw lcec.0.16.ch1-val => handwheelA_comp.in1
+net handwheelB_raw lcec.0.16.ch2-val => handwheelB_comp.in1
+
+addf handwheelA_comp servo-thread
+addf handwheelB_comp servo-thread
 
 setp handwheelA_comp.in0 10000
 setp handwheelB_comp.in0 10000
@@ -211,6 +213,8 @@ net handwheelA handwheelA_comp.out => handwheelEncoder.phase-A
 net handwheelB handwheelB_comp.out => handwheelEncoder.phase-B
 setp handwheelEncoder.x4-mode FALSE
 
+
+#Passing encoder counts to the axes
 net handwheelCounts handwheelEncoder.counts
 net handwheelCounts axis.x.jog-counts
 net handwheelCounts axis.y.jog-counts
@@ -218,6 +222,7 @@ net handwheelCounts axis.z.jog-counts
 net handwheelCounts axis.a.jog-counts
 net handwheelCounts axis.c.jog-counts
 
+#Setting handwheel increments
 net jogIncrement => axis.x.jog-scale
 net jogIncrement => axis.y.jog-scale
 net jogIncrement => axis.z.jog-scale
@@ -234,20 +239,21 @@ sets jogIncrementRotary 0.01
 ##############   Jog Speed Settings   ###########
 #################################################
 
-net jog_A_active jog_A_rate_OR.out jog_rate_OR.in0
-net jog_C_active jog_C_rate_OR.out jog_rate_OR.in1
-net jog_rotary_active jog_rate_OR.out => jog_rate_selector.sel1
+net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 
 setp jog_speed_scale.offset 0
 setp jog_speed_scale.in 100.0 #Basically 100in/min is a good starting point. This should come from the potentiometer though.
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 
-setp jog_rate_selector.in0 1
-setp jog_rate_selector.in1 2
-setp jog_rate_selector.in2 7.5
-setp jog_rate_selector.in3 20
+setp jog_rate_selector.in0 7.5 #Baseline gain for rotary axis
+setp jog_rate_selector.in1 20  #Rapid mode gain for rotary axis
+setp jog_rate_selector.in2 1   #Baseline gain for linear axes
+setp jog_rate_selector.in3 2   #Rapid mode gain for linear axis
 
 net jog_rate jog_speed_scale.out => halui.axis.jog-speed
+
+
+
 
 
 #################################################
@@ -261,9 +267,14 @@ setp feedOVRscale.in 100 #The potentiometer input should go here, but bear in mi
 setp feedOVRscale.offset 0
 net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
 net feedOVRpercent feedOVRscale.out => conv_feedOVR.in
+
 net feedOVRpercentINT conv_feedOVR.out => halui.feed-override.counts
+
 setp halui.feed-override.count-enable TRUE
 setp halui.feed-override.direct-value TRUE
+setp halui.feed-override.scale 1 #calibration for the potentiometer
+
+
 
 
 
@@ -277,7 +288,26 @@ setp halui.spindle.0.override.direct-value TRUE
 setp halui.spindle.0.override.scale 1 #calibration for the potentiometer
 
 
-#Handling the EStop Button
+
+
+
+#################################################
+#########   Rapid  Override Settings   ##########
+#################################################
+
+setp halui.rapid-override.counts 10 #This would just be the potentiometer range, PERCENTAGE. Defaulting to 10% for now
+setp halui.rapid-override.count-enable TRUE
+setp halui.rapid-override.direct-value TRUE
+setp halui.rapid-override.scale 1 #calibration for the potentiometer
+
+
+
+
+
+#################################################
+##############   E-Stop  Settings   #############
+#################################################
+
 net panel_Estop lcec.0.14.din-2 => EStopNOT.in => halui.estop.reset #EStopResetEdge.in
 #setp EStopResetEdge.in-edge FALSE #false means detect rising edges
 #setp EStopResetEdge.out-width-ns 100000
@@ -288,7 +318,14 @@ setp EStopAND.in0 TRUE
 net usrRequestEnable iocontrol.0.user-enable-out => EStopAND.in1
 net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in 
 
-#Other Buttons
+
+
+
+
+#################################################
+##############   Other Buttons     ##############
+#################################################
+
 net panel_cycle_start lcec.0.14.din-7 => halui.program.resume halui.program.run halui.program.step
 net panel_feed_hold lcec.0.14.din-6 => halui.program.pause halui.abort 
 
