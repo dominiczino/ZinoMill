@@ -18,12 +18,17 @@ addf spindleDrawbarInterlockAND servo-thread
 addf EStopAND servo-thread
 
 	
-loadrt tristate_float names=feedOVRcomp,rapidOVRcomp
+loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelJogFeeder,handwheelFeedFeeder,handwheelSpindleFeeder,handwheelRapidFeeder
 addf feedOVRcomp servo-thread
 addf rapidOVRcomp servo-thread
+addf handwheelJogFeeder servo-thread
+addf handwheelFeedFeeder servo-thread
+addf handwheelSpindleFeeder servo-thread
+addf handwheelRapidFeeder servo-thread
 
 loadrt mux2 names=feedOVRrapidSelector
 addf feedOVRrapidSelector servo-thread
+
 
 loadrt mux4 names=jog_rate_selector
 addf jog_rate_selector servo-thread
@@ -38,12 +43,18 @@ addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
 
-loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp
+loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp,handwheelF1Comp,handwheelF2Comp,handwheelF3Comp,handwheelF4Comp,handwheelF5Comp
 addf handwheelXComp servo-thread
 addf handwheelYComp servo-thread
 addf handwheelZComp servo-thread
 addf handwheelAComp servo-thread
 addf handwheelCComp servo-thread
+addf handwheelF1Comp servo-thread
+addf handwheelF2Comp servo-thread
+addf handwheelF3Comp servo-thread
+addf handwheelF4Comp servo-thread
+addf handwheelF5Comp servo-thread
+
 
 loadrt logic names=isLinearActiveLogicGate personality=0x206
 addf isLinearActiveLogicGate servo-thread
@@ -194,6 +205,36 @@ net handwheelASelected handwheelAComp.out => axis.a.jog-enable
 net handwheelCSelected handwheelCComp.out => axis.c.jog-enable
 
 
+
+#################################################
+#######   Handwheel Function Selector   #########
+#################################################
+
+net handwheelFunctionSelector lcec.0.16.ch4-val
+net handwheelFunctionSelector handwheelF1Comp.in
+net handwheelFunctionSelector handwheelF2Comp.in
+net handwheelFunctionSelector handwheelF3Comp.in
+net handwheelFunctionSelector handwheelF4Comp.in
+net handwheelFunctionSelector handwheelF5Comp.in
+
+setp handwheelF1Comp.min 10000
+setp handwheelF1Comp.max 14785
+setp handwheelF2Comp.min 14785
+setp handwheelF2Comp.max 18000
+setp handwheelF3Comp.min 18000
+setp handwheelF3Comp.max 23950
+setp handwheelF4Comp.min 23950
+setp handwheelF4Comp.max 30250
+setp handwheelF5Comp.min 30250
+setp handwheelF5Comp.max 33000
+
+net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable
+net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
+net handwheelSpindleOVRSelected handwheelF3Comp.out => handhandwheelSpindleFeeder.enable
+net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
+net ? handwheelF5Comp.out => ?
+
+
 #################################################
 #################    Handwheel   ################
 #################################################
@@ -214,13 +255,31 @@ net handwheelB handwheelB_comp.out => handwheelEncoder.phase-B
 setp handwheelEncoder.x4-mode FALSE
 
 
-#Passing encoder counts to the axes
+#Distributing encoder counts as needed
 net handwheelCounts handwheelEncoder.counts
-net handwheelCounts axis.x.jog-counts
-net handwheelCounts axis.y.jog-counts
-net handwheelCounts axis.z.jog-counts
-net handwheelCounts axis.a.jog-counts
-net handwheelCounts axis.c.jog-counts
+net handwheelCounts handwheelJogFeeder.in 
+net handwheelCounts handwheelFeedFeeder.in 
+net handwheelCounts handwheelSpindleFeeder.in 
+net handwheelCounts handwheelRapidFeeder.in
+
+
+net jogCounts handwheelJogFeeder.out
+net feedCounts handwheelFeedFeeder.out
+net rapidCounts handwheelRapidFeeder.out
+net spindleCounts handwheelSpindleFeeder.out
+
+
+
+
+#################################################
+##############    Handwheel Jog    ##############
+#################################################
+
+net jogCounts axis.x.jog-counts
+net jogCounts axis.y.jog-counts
+net jogCounts axis.z.jog-counts
+net jogCounts axis.a.jog-counts
+net jogCounts axis.c.jog-counts
 
 #Setting handwheel increments
 net jogIncrement => axis.x.jog-scale
@@ -233,10 +292,8 @@ sets jogIncrementRotary 0.01
 
 
 
-
-
 #################################################
-##############   Jog Speed Settings   ###########
+#########   Pushbutton Jog Settings   ###########
 #################################################
 
 net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
@@ -282,11 +339,10 @@ setp halui.feed-override.scale 1 #calibration for the potentiometer
 ########   Spindle  Override Settings   #########
 #################################################
 
-setp halui.spindle.0.override.counts 100 #This would just be the potentiometer range, PERCENTAGE
+net spindleCounts halui.spindle.0.override.counts
 setp halui.spindle.0.override.count-enable TRUE
-setp halui.spindle.0.override.direct-value TRUE
-setp halui.spindle.0.override.scale 1 #calibration for the potentiometer
-
+setp halui.spindle.0.override.direct-value FALSE
+setp halui.spindle.0.override.scale 1 #I believe this is the increment amount?
 
 
 
@@ -295,10 +351,10 @@ setp halui.spindle.0.override.scale 1 #calibration for the potentiometer
 #########   Rapid  Override Settings   ##########
 #################################################
 
-setp halui.rapid-override.counts 10 #This would just be the potentiometer range, PERCENTAGE. Defaulting to 10% for now
+net rapidCounts halui.rapid-override.counts
 setp halui.rapid-override.count-enable TRUE
-setp halui.rapid-override.direct-value TRUE
-setp halui.rapid-override.scale 1 #calibration for the potentiometer
+setp halui.rapid-override.direct-value FALSE
+setp halui.rapid-override.scale 1 #I believe this is the increment amount?
 
 
 
