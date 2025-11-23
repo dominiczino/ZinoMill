@@ -23,6 +23,9 @@ loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,in
 loadrt or2 names=jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
 loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder,handwheelEncoder
 
+loadrt ton names=BrakeDelay
+addf BrakeDelay servo-thread
+
 # add everything to servo thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
@@ -285,7 +288,9 @@ net a-amp-fault => joint.4.amp-fault-in <= cia402.4.drv-fault
 net a-pos-fb => joint.4.motor-pos-fb <= cia402.4.pos-fb
 
 #A-Axis Brake:
-net a-enable => lcec.0.12.dout-0
+net a-enable => BrakeDelay.in
+net a-brake BrakeDelay.q => lcec.0.12.dout-0
+setp BrakeDelay.pt 1
 
 #Set up homing
 net J4-probe-val lcec.0.4.probe-1-en => indexEdgeJ4.in
