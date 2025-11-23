@@ -277,11 +277,13 @@
     <slave idx="8" type="EL2008"/>
     <slave idx="9" type="EL4022"/>
     <slave idx="10" type="EL1008"/>
-    <slave idx="11" type="EK1100"/>
-    <slave idx="12" type="EL1008"/>
-    <slave idx="13" type="EL1008"/>
+    <slave idx="11" type="EL1008"/>
+    <slave idx="12" type="EL2008"/>
 
-    <slave idx="14" type="generic" vid="00000002" pid="0c203052" configPdos="true">
+    <slave idx="13" type="EK1100"/>
+    <slave idx="14" type="EL1008"/>
+    <slave idx="15" type="EL1008"/>
+    <slave idx="16" type="generic" vid="00000002" pid="0c203052" configPdos="true">
       <syncManager idx="3" dir="in">
         <pdo idx="1a01">
           <pdoEntry idx="6000" subIdx="11" bitLen="16" halPin="ch1-val" halType="float"/>
