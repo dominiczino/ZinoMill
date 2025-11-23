@@ -104,7 +104,7 @@ net Solenoid4_inv lcec.0.7.dout-7 <= solenoid4_not.out
 #Something else
 #net Solenoid5 <= ???
 net Solenoid5  => lcec.0.8.dout-0 => solenoid5_not.in
-net Solenoid5_inv lcec.0.7.dout-1 <= solenoid5_not.out
+net Solenoid5_inv lcec.0.8.dout-1 <= solenoid5_not.out
 
 
 
