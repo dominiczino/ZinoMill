@@ -119,13 +119,25 @@ net Solenoid5_inv lcec.0.8.dout-1 <= solenoid5_not.out
 #################################     Homing I/O       #################################################################
 ########################################################################################################################
 
+#LCEC slave 11
+# pin 0: Y1
+# pin 1: X
+# pin 2: Z
+# pin 3: ESTOP
+# pin 4: C (future)
+# pin 5: Tool setter (future)
+# pin 6: A
+# pin 7: Y2
 
-net J0homesw lcec.0.11.din-7-not => joint.0.home-sw-in
-net J1homesw lcec.0.11.din-4     => joint.1.home-sw-in
-net J2homesw lcec.0.11.din-5     => joint.2.home-sw-in
-net J3homesw lcec.0.11.din-6-not => joint.3.home-sw-in
-net J4homesw lcec.0.11.din-2     => joint.4.home-sw-in
-#net J5homesw lcec.0.11.din-3 => joint.5.home-sw-in
+
+
+net J0homesw lcec.0.11.din-1-not => joint.0.home-sw-in
+net J1homesw lcec.0.11.din-0     => joint.1.home-sw-in
+net J2homesw lcec.0.11.din-7     => joint.2.home-sw-in
+net J3homesw lcec.0.11.din-2-not => joint.3.home-sw-in
+net J4homesw lcec.0.11.din-6     => joint.4.home-sw-in
+#net J5homesw lcec.0.11.din-4 => joint.5.home-sw-in
+#net toolSett lcec.0.11.din-5 => ??
 
 
 ########################################################################################################################
