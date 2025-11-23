@@ -290,7 +290,7 @@ net a-pos-fb => joint.4.motor-pos-fb <= cia402.4.pos-fb
 #A-Axis Brake:
 net a-enable => BrakeDelay.in
 net a-brake BrakeDelay.q => lcec.0.12.dout-0
-setp BrakeDelay.pt 1
+setp BrakeDelay.pt 0.5
 
 #Set up homing
 net J4-probe-val lcec.0.4.probe-1-en => indexEdgeJ4.in

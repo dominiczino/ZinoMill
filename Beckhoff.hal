@@ -26,8 +26,10 @@ addf handwheelFeedFeeder servo-thread
 addf handwheelSpindleFeeder servo-thread
 addf handwheelRapidFeeder servo-thread
 
-loadrt mux2 names=feedOVRrapidSelector
+
+loadrt mux2 names=feedOVRrapidSelector,handwheelAxisSelectorFeeder
 addf feedOVRrapidSelector servo-thread
+addf handwheelAxisSelectorFeeder servo-thread
 
 
 loadrt mux4 names=jog_rate_selector
@@ -46,8 +48,9 @@ addf jogConv servo-thread
 addf rapidConv servo-thread
 addf spindleConv servo-thread
 
-loadrt conv_s32_float names=handwheelCountConverter
+loadrt conv_s32_float names=handwheelCountConverter,axisSelectorConverter
 addf handwheelCountConverter servo-thread
+addf axisSelectorConverter servo-thread
 
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp,handwheelF1Comp,handwheelF2Comp,handwheelF3Comp,handwheelF4Comp,handwheelF5Comp
@@ -202,7 +205,11 @@ net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 ###########   Handwheel Axis Selector   #########
 #################################################
 
-net handwheelAxisSelector lcec.0.16.ch3-val
+net axisSelectorRaw lcec.0.16.ch3-val => axisSelectorConverter.in
+net axisSelectorFloat axisSelectorConverter.out => handwheelAxisSelectorFeeder.in1
+setp handwheelAxisSelectorFeeder.in0 0
+
+net handwheelAxisSelector handwheelAxisSelectorFeeder.out
 net handwheelAxisSelector handwheelXComp.in
 net handwheelAxisSelector handwheelYComp.in
 net handwheelAxisSelector handwheelZComp.in
@@ -250,7 +257,7 @@ setp handwheelF4Comp.max 30250
 setp handwheelF5Comp.min 30250
 setp handwheelF5Comp.max 33000
 
-net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable
+net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => handwheelAxisSelectorFeeder.sel
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 net handwheelSpindleOVRSelected handwheelF3Comp.out => handwheelSpindleFeeder.enable
 #net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
