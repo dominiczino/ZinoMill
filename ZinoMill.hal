@@ -87,18 +87,18 @@ addf encoder.capture-position servo-thread
 
 
 #Wire up the differentiators for velocity and acceleration 
-net Xvel ddt_x.out => ddt_xv.in vel_xy.in0
-net Xacc <= ddt_xv.out
-net Yvel ddt_y.out => ddt_yv.in vel_xy.in1
-net Yacc <= ddt_yv.out
-net Zvel ddt_z.out => ddt_zv.in vel_xyz.in0
-net Zacc <= ddt_zv.out
-net Avel ddt_a.out => ddt_av.in
-net Aacc <= ddt_av.out
-net Cvel ddt_c.out => ddt_cv.in
-net Cacc <= ddt_cv.out
-net XYvel vel_xy.out => vel_xyz.in1
-net XYZvel <= vel_xyz.out
+#net Xvel ddt_x.out => ddt_xv.in vel_xy.in0
+#net Xacc <= ddt_xv.out
+#net Yvel ddt_y.out => ddt_yv.in vel_xy.in1
+#net Yacc <= ddt_yv.out
+#net Zvel ddt_z.out => ddt_zv.in vel_xyz.in0
+#net Zacc <= ddt_zv.out
+#net Avel ddt_a.out => ddt_av.in
+#net Aacc <= ddt_av.out
+#net Cvel ddt_c.out => ddt_cv.in
+#net Cacc <= ddt_cv.out
+#net XYvel vel_xy.out => vel_xyz.in1
+#net XYZvel <= vel_xyz.out
 
 #Sets the drives up to give us index pulses
 setp lcec.0.0.probe-word 23
@@ -140,7 +140,7 @@ net Xpos <= joint.0.motor-pos-cmd => cia402.0.pos-cmd
 
 #cia402 telling LinuxCNC what's going on
 net x-amp-fault => joint.0.amp-fault-in <= cia402.0.drv-fault
-net x-pos-fb => joint.0.motor-pos-fb ddt_x.in <= cia402.0.pos-fb
+net x-pos-fb => joint.0.motor-pos-fb <= cia402.0.pos-fb
 
 #Set up homing 
 net J0-probe-val lcec.0.0.probe-1-en => indexEdgeJ0.in
@@ -175,7 +175,7 @@ net Y1pos <= joint.1.motor-pos-cmd => cia402.1.pos-cmd
 
 #cia402 telling LinuxCNC what's going on
 net y1-amp-fault => joint.1.amp-fault-in <= cia402.1.drv-fault
-net y1-pos-fb => joint.1.motor-pos-fb ddt_y.in <= cia402.1.pos-fb
+net y1-pos-fb => joint.1.motor-pos-fb <= cia402.1.pos-fb
 
 #Set up homing
 net J1-probe-val lcec.0.1.probe-1-en => indexEdgeJ1.in
@@ -247,7 +247,7 @@ net Zpos <= joint.3.motor-pos-cmd => cia402.3.pos-cmd
 
 #cia402 telling LinuxCNC what's going on
 net z-amp-fault => joint.3.amp-fault-in <= cia402.3.drv-fault
-net z-pos-fb => joint.3.motor-pos-fb ddt_z.in <= cia402.3.pos-fb
+net z-pos-fb => joint.3.motor-pos-fb <= cia402.3.pos-fb
 
 #Set up homing
 net J3-probe-val lcec.0.3.probe-1-en => indexEdgeJ3.in
@@ -282,7 +282,7 @@ net Apos <= joint.4.motor-pos-cmd => cia402.4.pos-cmd
 
 #cia402 telling LinuxCNC what's going on
 net a-amp-fault => joint.4.amp-fault-in <= cia402.4.drv-fault
-net a-pos-fb => joint.4.motor-pos-fb ddt_a.in <= cia402.4.pos-fb
+net a-pos-fb => joint.4.motor-pos-fb <= cia402.4.pos-fb
 
 #A-Axis Brake:
 net a-enable => lcec.0.12.dout-0
@@ -321,7 +321,7 @@ net Cpos <= joint.5.motor-pos-cmd => cia402.5.pos-cmd
 
 #cia402 telling LinuxCNC what's going on
 net c-amp-fault => joint.5.amp-fault-in <= cia402.5.drv-fault
-net c-pos-fb => joint.5.motor-pos-fb ddt_c.in <= cia402.5.pos-fb
+net c-pos-fb => joint.5.motor-pos-fb <= cia402.5.pos-fb
 
 #Set up homing 
 net J5-probe-val lcec.0.5.probe-1-en => indexEdgeJ5.in
