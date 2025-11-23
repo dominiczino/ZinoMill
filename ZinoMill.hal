@@ -17,7 +17,7 @@ loadrt cia402 count=6
 #loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_cv
 
 # Also do some cartesian velocities
-loadrt hypot names=vel_xy,vel_xyz
+#loadrt hypot names=vel_xy,vel_xyz
 
 loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,EStopResetEdge
 loadrt or2 names=jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
