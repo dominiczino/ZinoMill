@@ -42,6 +42,9 @@ loadrt conv_float_s32 names=conv_spindleOVR,conv_feedOVR
 addf conv_spindleOVR servo-thread
 addf conv_feedOVR servo-thread
 
+loadrt conv_s32_float names=handwheelCountConverter
+addf handwheelCountConverter servo-thread
+
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp,handwheelF1Comp,handwheelF2Comp,handwheelF3Comp,handwheelF4Comp,handwheelF5Comp
 addf handwheelXComp servo-thread
@@ -259,7 +262,9 @@ setp handwheelEncoder.x4-mode FALSE
 
 
 #Distributing encoder counts as needed
-net handwheelCounts handwheelEncoder.counts
+net handwheelCounts_s32 handwheelEncoder.counts => handwheelCountConverter.in
+net handwheelCounts handwheelCountConverter.out
+
 net handwheelCounts handwheelJogFeeder.in 
 net handwheelCounts handwheelFeedFeeder.in 
 net handwheelCounts handwheelSpindleFeeder.in 
