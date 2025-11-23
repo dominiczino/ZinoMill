@@ -11,7 +11,7 @@ loadrt lcec
 loadrt cia402 count=6
 
 #Load PID controllers for all 5 axes.
-loadrt pid names=x-pid,y-pid,z-pid,a-pid,c-pid
+#loadrt pid names=x-pid,y-pid,z-pid,a-pid,c-pid
 
 # load velocity and acceleration
 #loadrt ddt names=ddt_x,ddt_xv,ddt_y,ddt_yv,ddt_z,ddt_zv,ddt_a,ddt_av,ddt_c,ddt_cv
@@ -27,18 +27,18 @@ loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
 
-addf ddt_x servo-thread
-addf ddt_xv servo-thread
-addf ddt_y servo-thread
-addf ddt_yv servo-thread
-addf ddt_z servo-thread
-addf ddt_zv servo-thread
-addf ddt_a servo-thread
-addf ddt_av servo-thread
-addf ddt_c servo-thread
-addf ddt_cv servo-thread
-addf vel_xy servo-thread
-addf vel_xyz servo-thread
+# addf ddt_x servo-thread
+# addf ddt_xv servo-thread
+# addf ddt_y servo-thread
+# addf ddt_yv servo-thread
+# addf ddt_z servo-thread
+# addf ddt_zv servo-thread
+# addf ddt_a servo-thread
+# addf ddt_av servo-thread
+# addf ddt_c servo-thread
+# addf ddt_cv servo-thread
+# addf vel_xy servo-thread
+# addf vel_xyz servo-thread
 
 addf lcec.read-all servo-thread 
 addf lcec.write-all servo-thread
