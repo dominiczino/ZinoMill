@@ -387,7 +387,7 @@ net panel_Estop lcec.0.14.din-2 => EStopNOT.in => halui.estop.reset #EStopResetE
 #net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
 net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
 
-setp EStopAND.in0 TRUE
+#setp EStopAND.in0 TRUE
 net usrRequestEnable iocontrol.0.user-enable-out => EStopAND.in1
 net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in 
 
