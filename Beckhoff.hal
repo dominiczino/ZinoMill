@@ -364,7 +364,7 @@ net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 net jogup jogUpAND.out => jogUpdown.countup
 net jogdown jogDownAND.out => jogUpdown.countdown
 
-net jogCounts2 jogUpdown.counts => jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jogCounts2 jogUpdown.count => jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
 setp jog_speed_scale.offset 100.0
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 
