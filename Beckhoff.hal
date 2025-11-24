@@ -269,7 +269,7 @@ setp handwheelF5Comp.max 33000
 net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => jogDelay.in
 net handwheelJogSelectedDelayed jogDelay.q => handwheelAxisSelectorFeeder.sel
 
-net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
+net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable => handwheelJogFeeder.enable
 
 net handwheelSpindleOVRSelected handwheelF3Comp.out => spindleDelay.in => handwheelSpindleFeeder.enable
 net handwheelSpindleSelectedDelayed spindleDelay.q => halui.spindle.0.override.count-enable
@@ -279,9 +279,9 @@ net handwheelRapidOVRSelectedDelayed rapidDelay.q => halui.rapid-override.count-
 
 #net ? handwheelF5Comp.out => ?
 
-setp jogDelay.pt 0.01
-setp rapidDelay.pt 0.01
-setp spindleDelay.pt 0.01
+setp jogDelay.pt 0.1
+setp rapidDelay.pt 0.1
+setp spindleDelay.pt 0.1
 
 
 #################################################
@@ -453,7 +453,7 @@ setp halui.rapid-override.scale 0.05
 
 net panel_Estop lcec.0.14.din-2-not => EStopNOT.in => EStopDelay.in
 net EStopResetDelayed EStopDelay.q => halui.estop.reset 
-setp EStopDelay.pt 0.1
+setp EStopDelay.pt 0.5
 
 net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
 
