@@ -45,8 +45,9 @@ loadrt scale names=feedOVRscale,rpm_rps,rpm_analog,jog_speed_scale
 addf feedOVRscale servo-thread
 addf jog_speed_scale servo-thread
 
-loadrt sum2 names=jog_speed_sum
+loadrt sum2 names=jog_speed_sum,feedOVRsum
 addf jog_speed_sum servo-thread
+addf feedOVRsum servo-thread
 
 loadrt conv_float_s32 names=conv_spindleOVR,conv_feedOVR,jogConv,feedConv,spindleConv,rapidConv
 addf conv_spindleOVR servo-thread
