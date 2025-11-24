@@ -271,11 +271,11 @@ net handwheelJogSelectedDelayed jogDelay.q => handwheelAxisSelectorFeeder.sel
 
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 
-net handwheelSpindleOVRSelected handwheelF3Comp.out => spindleDelay.in
-net handwheelSpindleSelectedDelayed spindleDelay.q => handwheelSpindleFeeder.enable
+net handwheelSpindleOVRSelected handwheelF3Comp.out => spindleDelay.in => handwheelSpindleFeeder.enable
+net handwheelSpindleSelectedDelayed spindleDelay.q => halui.spindle.0.override.count-enable
 
-net handwheelRapidOVRSelected handwheelF4Comp.out => rapidDelay.in
-net handwheelRapidOVRSelectedDelayed rapidDelay.q => handwheelRapidFeeder.enable
+net handwheelRapidOVRSelected handwheelF4Comp.out => rapidDelay.in => handwheelRapidFeeder.enable
+net handwheelRapidOVRSelectedDelayed rapidDelay.q => halui.rapid-override.count-enable
 
 #net ? handwheelF5Comp.out => ?
 
@@ -374,9 +374,9 @@ net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 
 net jogup jogUpAND.out => jogUpdown.countup
 net jogdown jogDownAND.out => jogUpdown.countdown
-#setp jogUpdown.min -100
-#setp jogUpdown.max 100
-#setp jogUpdown.clamp TRUE
+setp jogUpdown.min -100
+setp jogUpdown.max 100
+setp jogUpdown.clamp TRUE
 
 net jogCounts2 jogUpdown.count => jogCountConv.in
 net jogCounts2Float jogCountConv.out jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
@@ -403,9 +403,9 @@ setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is w
 
 net feedup feedUpAND.out => feedOvrUpdown.countup
 net feeddown feedDownAND.out => feedOvrUpdown.countdown
-#setp feedUpdown.min -100
-#setp feedUpdown.max 100
-#setp feedUpdown.clamp TRUE
+setp feedUpdown.min -100
+setp feedUpdown.max 100
+setp feedUpdown.clamp TRUE
 
 net feedCounts2 feedOvrUpdown.count => feedCountConv.in
 net feedCounts2Float feedCountConv.out => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
@@ -427,7 +427,7 @@ setp halui.feed-override.scale 0.01
 #################################################
 
 net spindleCounts halui.spindle.0.override.counts
-setp halui.spindle.0.override.count-enable TRUE
+#setp halui.spindle.0.override.count-enable TRUE
 setp halui.spindle.0.override.direct-value FALSE
 setp halui.spindle.0.override.scale 0.05
 
@@ -439,7 +439,7 @@ setp halui.spindle.0.override.scale 0.05
 #################################################
 
 net rapidCounts halui.rapid-override.counts
-setp halui.rapid-override.count-enable TRUE
+#setp halui.rapid-override.count-enable TRUE
 setp halui.rapid-override.direct-value FALSE
 setp halui.rapid-override.scale 0.05 
 
