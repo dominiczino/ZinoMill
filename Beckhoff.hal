@@ -267,12 +267,21 @@ setp handwheelF5Comp.min 30250
 setp handwheelF5Comp.max 33000
 
 net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => jogDelay.in
-net jogDelayOut jogDelay.q => handwheelAxisSelectorFeeder.sel
-setp jogDelay.pt 0.1
+net handwheelJogSelectedDelayed jogDelay.q => handwheelAxisSelectorFeeder.sel
+
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
-net handwheelSpindleOVRSelected handwheelF3Comp.out => handwheelSpindleFeeder.enable
-net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
+
+net handwheelSpindleOVRSelected handwheelF3Comp.out => spindleDelay.in
+net handwheelSpindleSelectedDelayed spindleDelay.q => handwheelSpindleFeeder.enable
+
+net handwheelRapidOVRSelected handwheelF4Comp.out => rapidDelay.in
+net handwheelRapidOVRSelectedDelayed rapidDelay.q => handwheelRapidFeeder.enable
+
 #net ? handwheelF5Comp.out => ?
+
+setp jogDelay.pt 0.01
+setp rapidDelay.pt 0.01
+setp spindleDelay.pt 0.01
 
 
 #################################################
@@ -320,11 +329,11 @@ net rapidCounts rapidConv.out
 net spindleCounts spindleConv.out
 
 #Distributing Direction
-net handwheelB feedUpAND.in0
-net handwheelB jogUpAND.in0
+net handwheelB feedDownAND.in0
+net handwheelB jogDownAND.in0
 net NotHandwheelB handwheelBNOT.out =>
-net NotHandwheelB feedDownAND.in0
-net NotHandwheelB jogDownAND.in0
+net NotHandwheelB feedUpAND.in0
+net NotHandwheelB jogUpAND.in0
 
 #Distributing Pulses
 net jogPulse handwheelJogFeeder.out =>
@@ -365,6 +374,9 @@ net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 
 net jogup jogUpAND.out => jogUpdown.countup
 net jogdown jogDownAND.out => jogUpdown.countdown
+setp jogUpdown.min -100
+setp jogUpdown.max 100
+setp jogUpdown.clamp TRUE
 
 net jogCounts2 jogUpdown.count => jogCountConv.in
 net jogCounts2Float jogCountConv.out jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
@@ -391,6 +403,9 @@ setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is w
 
 net feedup feedUpAND.out => feedOvrUpdown.countup
 net feeddown feedDownAND.out => feedOvrUpdown.countdown
+setp feedUpdown.min -100
+setp feedUpdown.max 100
+setp feedUpdown.clamp TRUE
 
 net feedCounts2 feedOvrUpdown.count => feedCountConv.in
 net feedCounts2Float feedCountConv.out => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
@@ -436,10 +451,10 @@ setp halui.rapid-override.scale 0.05
 ##############   E-Stop  Settings   #############
 #################################################
 
-net panel_Estop lcec.0.14.din-2-not => EStopNOT.in => halui.estop.reset #EStopResetEdge.in
-#setp EStopResetEdge.in-edge FALSE #false means detect rising edges
-#setp EStopResetEdge.out-width-ns 100000
-#net panel_EStop_Reset EStopResetEdge.out => halui.estop.reset
+net panel_Estop lcec.0.14.din-2-not => EStopNOT.in => EStopDelay.in
+net EStopResetDelayed EStopDelay.q => halui.estop.reset 
+setp EStopDelay.pt 0.1
+
 net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
 
 #setp EStopAND.in0 TRUE
