@@ -256,7 +256,7 @@ setp handwheelF5Comp.min 30250
 setp handwheelF5Comp.max 33000
 
 net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => jogDelay.in
-net jogDelayOut jogDelay.out => handwheelAxisSelectorFeeder.sel
+net jogDelayOut jogDelay.q => handwheelAxisSelectorFeeder.sel
 setp jogDelay.pt 0.5
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 net handwheelSpindleOVRSelected handwheelF3Comp.out => handwheelSpindleFeeder.enable
