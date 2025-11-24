@@ -48,9 +48,8 @@ addf jogConv servo-thread
 addf rapidConv servo-thread
 addf spindleConv servo-thread
 
-loadrt conv_s32_float names=handwheelCountConverter,axisSelectorConverter
+loadrt conv_s32_float names=handwheelCountConverter
 addf handwheelCountConverter servo-thread
-addf axisSelectorConverter servo-thread
 
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp,handwheelF1Comp,handwheelF2Comp,handwheelF3Comp,handwheelF4Comp,handwheelF5Comp
@@ -205,8 +204,7 @@ net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 ###########   Handwheel Axis Selector   #########
 #################################################
 
-net axisSelectorRaw lcec.0.16.ch3-val => axisSelectorConverter.in
-net axisSelectorFloat axisSelectorConverter.out => handwheelAxisSelectorFeeder.in1
+net axisSelectorRaw lcec.0.16.ch3-val => handwheelAxisSelectorFeeder.in1
 setp handwheelAxisSelectorFeeder.in0 0
 
 net handwheelAxisSelector handwheelAxisSelectorFeeder.out
