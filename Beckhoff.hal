@@ -22,8 +22,8 @@ addf feedDownAND servo-thread
 addf jogUpAND servo-thread
 addf jogDownAND servo-thread
 
-loadrt tristate_bit names=handwheelFeedFeeder,handwheelJogFeeder
-loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder
+loadrt tristate_bit names=handwheelFeedFeederr
+loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder,handwheelJogFeede
 addf feedOVRcomp servo-thread
 addf rapidOVRcomp servo-thread
 addf handwheelJogFeeder servo-thread
@@ -269,7 +269,7 @@ setp handwheelF5Comp.max 33000
 net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => jogDelay.in
 net handwheelJogSelectedDelayed jogDelay.q => handwheelAxisSelectorFeeder.sel
 
-net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable => handwheelJogFeeder.enable
+net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 
 net handwheelSpindleOVRSelected handwheelF3Comp.out => spindleDelay.in => handwheelSpindleFeeder.enable
 net handwheelSpindleSelectedDelayed spindleDelay.q => halui.spindle.0.override.count-enable
@@ -310,20 +310,19 @@ setp handwheelEdge.in-edge false
 #Distributing encoder counts as needed
 net handwheelCounts_s32 handwheelEncoder.counts => handwheelCountConverter.in
 net handwheelCounts handwheelCountConverter.out
+net handwheelCounts handwheelJogFeeder.in 
 net handwheelCounts handwheelSpindleFeeder.in 
 net handwheelCounts handwheelRapidFeeder.in
 
-net handwheelPulse handwheelEdge.out
-net handwheelPulse handwheelJogFeeder.in 
-net handwheelPulse handwheelFeedFeeder.in 
+net handwheelPulse handwheelEdge.out => handwheelFeedFeeder.in 
 
 
-#net jogCounts_flt handwheelJogFeeder.out => jogConv.in
+net jogCounts_flt handwheelJogFeeder.out => jogConv.in
 #net feedCounts_flt handwheelFeedFeeder.out => feedConv.in
 net rapidCounts_flt handwheelRapidFeeder.out => rapidConv.in
 net spindleCounts_flt handwheelSpindleFeeder.out => spindleConv.in
 
-#net jogCounts jogConv.out
+net jogCounts jogConv.out
 #net feedCounts feedConv.out
 net rapidCounts rapidConv.out
 net spindleCounts spindleConv.out
@@ -336,9 +335,9 @@ net NotHandwheelB feedUpAND.in0
 net NotHandwheelB jogUpAND.in0
 
 #Distributing Pulses
-net jogPulse handwheelJogFeeder.out =>
-net jogPulse jogUpAND.in1
-net jogPulse jogDownAND.in1
+#net jogPulse handwheelJogFeeder.out =>
+#net jogPulse jogUpAND.in1
+#net jogPulse jogDownAND.in1
 
 net feedPulse handwheelFeedFeeder.out =>
 net feedPulse feedUpAND.in1
@@ -372,8 +371,8 @@ sets jogIncrementRotary 0.01
 
 net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 
-net jogup jogUpAND.out => jogUpdown.countup
-net jogdown jogDownAND.out => jogUpdown.countdown
+net feedup feedUpAND.out => jogUpdown.countup
+net feeddown feedDownAND.out => jogUpdown.countdown
 setp jogUpdown.min -100
 setp jogUpdown.max 100
 setp jogUpdown.clamp TRUE
@@ -401,8 +400,8 @@ net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 setp feedOVRrapidSelector.in0 1
 setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is when the rapid button is pressed
 
-net feedup feedUpAND.out => feedOvrUpdown.countup
-net feeddown feedDownAND.out => feedOvrUpdown.countdown
+net feedup feedOvrUpdown.countup
+net feeddown feedOvrUpdown.countdown
 setp feedOvrUpdown.min -100
 setp feedOvrUpdown.max 100
 setp feedOvrUpdown.clamp TRUE
