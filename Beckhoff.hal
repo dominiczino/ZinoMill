@@ -41,8 +41,9 @@ loadrt mux4 names=jog_rate_selector
 addf jog_rate_selector servo-thread
 
 
-loadrt scale names=feedOVRscale,rpm_rps,rpm_analog
+loadrt scale names=feedOVRscale,rpm_rps,rpm_analog,jog_speed_scale
 addf feedOVRscale servo-thread
+addf jog_speed_scale servo-thread
 
 loadrt sum2 names=jog_speed_sum
 addf jog_speed_sum servo-thread
@@ -381,16 +382,19 @@ setp jogUpdown.clamp TRUE
 
 
 net jogCounts2 jogUpdown.count => jogCountConv.in
-net jogCounts2Float jogCountConv.out jog_speed_sum.in0  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jogCounts2Float jogCountConv.out jog_speed_sum.in0
 setp jog_speed_sum.in1 100.0
-net jog_rate_factor jog_rate_selector.out => jog_speed_sum.gain0 => jog_speed_sum.gain1
+setp jog_speed_sum.offset 0
+net jog_rate_scaling jog_speed_sum.out => jog_speed_scale.in
+net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
+setp jog_speed_scale offset 0
 
 setp jog_rate_selector.in0 7.5 #Baseline gain for rotary axis
 setp jog_rate_selector.in1 20  #Rapid mode gain for rotary axis
 setp jog_rate_selector.in2 1   #Baseline gain for linear axes
 setp jog_rate_selector.in3 2   #Rapid mode gain for linear axis
 
-net jog_rate jog_speed_sum.out => halui.axis.jog-speed
+net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 
 
 
