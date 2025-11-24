@@ -1,7 +1,7 @@
 #This file handles the Beckhoff I/O modules that control the pneumatics and the spindle
 
 
-loadrt not names=spindleReverseNOT,spindleRunningNOT,EStopNOT,solenoid1_not,solenoid2_not,solenoid3_not,solenoid4_not,solenoid5_not
+loadrt not names=spindleReverseNOT,spindleRunningNOT,EStopNOT,solenoid1_not,solenoid2_not,solenoid3_not,solenoid4_not,solenoid5_not,handwheelBNOT
 addf spindleReverseNOT servo-thread
 addf spindleRunningNOT servo-thread
 addf EStopNOT servo-thread
@@ -10,15 +10,20 @@ addf solenoid2_not servo-thread
 addf solenoid3_not servo-thread
 addf solenoid4_not servo-thread
 addf solenoid5_not servo-thread
+addf handwheelBNOT servo-thread
 
-loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND
+loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND,feedUpAND,feedDownAND,jogUpAND,jogDownAND
 addf spindleForwardAND servo-thread
 addf spindleReverseAND servo-thread
 addf spindleDrawbarInterlockAND servo-thread
 addf EStopAND servo-thread
+addf feedUpAND servo-thread
+addf feedDownAND servo-thread
+addf jogUpAND servo-thread
+addf jogDownAND servo-thread
 
-	
-loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelJogFeeder,handwheelFeedFeeder,handwheelSpindleFeeder,handwheelRapidFeeder
+loadrt tristate_bit names=handwheelFeedFeeder,handwheelJogFeeder
+loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder
 addf feedOVRcomp servo-thread
 addf rapidOVRcomp servo-thread
 addf handwheelJogFeeder servo-thread
@@ -67,6 +72,10 @@ addf handwheelF5Comp servo-thread
 
 loadrt logic names=isLinearActiveLogicGate personality=0x206
 addf isLinearActiveLogicGate servo-thread
+
+loadrt updown names=feedOvrUpdown,jogUpdown
+addf feedOvrUpdown servo-thread
+addf jogUpdown servo-thread
 
 
 
@@ -260,7 +269,7 @@ net jogDelayOut jogDelay.q => handwheelAxisSelectorFeeder.sel
 setp jogDelay.pt 0.1
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 net handwheelSpindleOVRSelected handwheelF3Comp.out => handwheelSpindleFeeder.enable
-#net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
+net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
 #net ? handwheelF5Comp.out => ?
 
 
@@ -279,32 +288,50 @@ setp handwheelA_comp.in0 10000
 setp handwheelB_comp.in0 10000
 setp handwheelA_comp.hyst 1000
 setp handwheelB_comp.hyst 1000
-net handwheelA handwheelA_comp.out => handwheelEncoder.phase-A
-net handwheelB handwheelB_comp.out => handwheelEncoder.phase-B
+net handwheelA handwheelA_comp.out => handwheelEncoder.phase-A => handwheelEdge.in
+net handwheelB handwheelB_comp.out => handwheelEncoder.phase-B => handwheelBNOT.in
 setp handwheelEncoder.x4-mode FALSE
+
+setp handwheelEdge.out-width-ns 1000
+setp handwheelEdge.in-edge false
 
 
 #Distributing encoder counts as needed
 net handwheelCounts_s32 handwheelEncoder.counts => handwheelCountConverter.in
 net handwheelCounts handwheelCountConverter.out
-net handwheelCounts handwheelJogFeeder.in 
-net handwheelCounts handwheelFeedFeeder.in 
 net handwheelCounts handwheelSpindleFeeder.in 
 net handwheelCounts handwheelRapidFeeder.in
 
+net handwheelPulse handwheelEdge.out
+net handwheelPulse handwheelJogFeeder.in 
+net handwheelPulse handwheelFeedFeeder.in 
 
 
-net jogCounts_flt handwheelJogFeeder.out => jogConv.in
-net feedCounts_flt handwheelFeedFeeder.out => feedConv.in
+#net jogCounts_flt handwheelJogFeeder.out => jogConv.in
+#net feedCounts_flt handwheelFeedFeeder.out => feedConv.in
 net rapidCounts_flt handwheelRapidFeeder.out => rapidConv.in
 net spindleCounts_flt handwheelSpindleFeeder.out => spindleConv.in
 
-net jogCounts jogConv.out
-net feedCounts feedConv.out
+#net jogCounts jogConv.out
+#net feedCounts feedConv.out
 net rapidCounts rapidConv.out
 net spindleCounts spindleConv.out
 
+#Distributing Direction
+net handwheelB feedUpAND.in0
+net handwheelB jogUpAnd.in0
+net NotHandwheelB handwheelBNOT.out =>
+net NotHandwheelB feedDownAND.in0
+net NotHandwheelB jogDownAND.in0
 
+#Distributing Pulses
+net jogPulse handwheelJogFeeder.out =>
+net jogPulse jogUpAND.in1
+net jogPulse jogDownAND.in1
+
+net feedPulse handwheelFeedFeeder.out =>
+net feedPulse feedUpAND.in1
+net feedPulse feedDownAND.in1
 
 
 #################################################
@@ -334,8 +361,11 @@ sets jogIncrementRotary 0.01
 
 net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 
-setp jog_speed_scale.offset 0
-setp jog_speed_scale.in 100.0 #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jogup jogUpAND.out => jogUpdown.countup
+net jogdown jogDownAND.out => jogUpdown.countdown
+
+net jogCounts2 jogUpdown.counts => jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+setp jog_speed_scale.offset 100.0
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 
 setp jog_rate_selector.in0 7.5 #Baseline gain for rotary axis
@@ -356,18 +386,20 @@ net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 setp feedOVRrapidSelector.in0 1
 setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is when the rapid button is pressed
 
-setp feedOVRscale.in 100 #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
-setp feedOVRscale.offset 0
+net feedup feedUpAND.out => feedOvrUpdown.countup
+net feeddown feedDownAND.out => feedOvrUpdown.countdown
+
+net feedCounts2 feedOvrUpdown.count => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
+setp feedOVRscale.offset 100
 net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
 net feedOVRpercent feedOVRscale.out => conv_feedOVR.in
 
 net feedOVRpercentINT conv_feedOVR.out => halui.feed-override.counts
 
+#net feedCounts halui.feed-override.counts
 setp halui.feed-override.count-enable TRUE
 setp halui.feed-override.direct-value TRUE
-setp halui.feed-override.scale 1 #calibration for the potentiometer
-
-
+setp halui.feed-override.scale 0.01
 
 
 
@@ -378,7 +410,7 @@ setp halui.feed-override.scale 1 #calibration for the potentiometer
 net spindleCounts halui.spindle.0.override.counts
 setp halui.spindle.0.override.count-enable TRUE
 setp halui.spindle.0.override.direct-value FALSE
-setp halui.spindle.0.override.scale 0.01 #I believe this is the increment amount?
+setp halui.spindle.0.override.scale 0.05
 
 
 
@@ -390,7 +422,7 @@ setp halui.spindle.0.override.scale 0.01 #I believe this is the increment amount
 net rapidCounts halui.rapid-override.counts
 setp halui.rapid-override.count-enable TRUE
 setp halui.rapid-override.direct-value FALSE
-setp halui.rapid-override.scale 1 #I believe this is the increment amount?
+setp halui.rapid-override.scale 0.05 
 
 
 
