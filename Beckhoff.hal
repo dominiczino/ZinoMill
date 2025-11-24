@@ -22,8 +22,8 @@ addf feedDownAND servo-thread
 addf jogUpAND servo-thread
 addf jogDownAND servo-thread
 
-loadrt tristate_bit names=handwheelFeedFeederr
-loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder,handwheelJogFeede
+loadrt tristate_bit names=handwheelFeedFeeder
+loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder,handwheelJogFeeder
 addf feedOVRcomp servo-thread
 addf rapidOVRcomp servo-thread
 addf handwheelJogFeeder servo-thread
