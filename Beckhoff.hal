@@ -414,8 +414,12 @@ setp feedOvrUpdown.max 100
 setp feedOvrUpdown.clamp TRUE
 
 net feedCounts2 feedOvrUpdown.count => feedCountConv.in
-net feedCounts2Float feedCountConv.out => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
-setp feedOVRscale.offset 100
+net feedCounts2Float feedCountConv.out => feedOVRsum.in0
+setp feedOVRsum.in1 100
+setp feedOVRsum.offset 0
+
+net feedOVRsummed feedOVRsum.out => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
+setp feedOVRscale.offset 0
 net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
 net feedOVRpercent feedOVRscale.out => conv_feedOVR.in
 
