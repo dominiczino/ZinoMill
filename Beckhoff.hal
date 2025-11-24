@@ -257,7 +257,7 @@ setp handwheelF5Comp.max 33000
 
 net handwheelJogSelected handwheelF1Comp.out => handwheelJogFeeder.enable => jogDelay.in
 net jogDelayOut jogDelay.q => handwheelAxisSelectorFeeder.sel
-setp jogDelay.pt 0.5
+setp jogDelay.pt 0.1
 net handwheelFeedOVRSelected handwheelF2Comp.out => handwheelFeedFeeder.enable
 net handwheelSpindleOVRSelected handwheelF3Comp.out => handwheelSpindleFeeder.enable
 #net handwheelRapidOVRSelected handwheelF4Comp.out => handwheelRapidFeeder.enable
@@ -378,7 +378,7 @@ setp halui.feed-override.scale 1 #calibration for the potentiometer
 net spindleCounts halui.spindle.0.override.counts
 setp halui.spindle.0.override.count-enable TRUE
 setp halui.spindle.0.override.direct-value FALSE
-setp halui.spindle.0.override.scale 1 #I believe this is the increment amount?
+setp halui.spindle.0.override.scale 0.01 #I believe this is the increment amount?
 
 
 
