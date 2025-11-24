@@ -53,8 +53,10 @@ addf jogConv servo-thread
 addf rapidConv servo-thread
 addf spindleConv servo-thread
 
-loadrt conv_s32_float names=handwheelCountConverter
+loadrt conv_s32_float names=handwheelCountConverter,jogCountConv,feedCountConv
 addf handwheelCountConverter servo-thread
+addf jogCountConv servo-thread
+addf feedCountConv servo-thread
 
 
 loadrt wcomp names=handwheelXComp,handwheelYComp,handwheelZComp,handwheelAComp,handwheelCComp,handwheelF1Comp,handwheelF2Comp,handwheelF3Comp,handwheelF4Comp,handwheelF5Comp
@@ -364,7 +366,8 @@ net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
 net jogup jogUpAND.out => jogUpdown.countup
 net jogdown jogDownAND.out => jogUpdown.countdown
 
-net jogCounts2 jogUpdown.count => jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
+net jogCounts2 jogUpdown.count => jogCountConv.in
+net jogCounts2Float jogCountConv.out jog_speed_scale.in  #Basically 100in/min is a good starting point. This should come from the potentiometer though.
 setp jog_speed_scale.offset 100.0
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 
@@ -389,7 +392,8 @@ setp feedOVRrapidSelector.in1 2 #This controls how much faster the feedrate is w
 net feedup feedUpAND.out => feedOvrUpdown.countup
 net feeddown feedDownAND.out => feedOvrUpdown.countdown
 
-net feedCounts2 feedOvrUpdown.count => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
+net feedCounts2 feedOvrUpdown.count => feedCountConv.in
+net feedCounts2Float feedCountConv.out => feedOVRscale.in  #The potentiometer input should go here, but bear in mind that this is a PERCENTAGE
 setp feedOVRscale.offset 100
 net feedOVRfactor feedOVRrapidSelector.out => feedOVRscale.gain
 net feedOVRpercent feedOVRscale.out => conv_feedOVR.in
