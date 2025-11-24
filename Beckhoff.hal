@@ -387,7 +387,7 @@ setp jog_speed_sum.in1 100.0
 setp jog_speed_sum.offset 0
 net jog_rate_scaling jog_speed_sum.out => jog_speed_scale.in
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
-setp jog_speed_scale offset 0
+setp jog_speed_scale.offset 0
 
 setp jog_rate_selector.in0 7.5 #Baseline gain for rotary axis
 setp jog_rate_selector.in1 20  #Rapid mode gain for rotary axis
