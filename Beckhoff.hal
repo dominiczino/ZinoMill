@@ -319,7 +319,7 @@ net spindleCounts spindleConv.out
 
 #Distributing Direction
 net handwheelB feedUpAND.in0
-net handwheelB jogUpAnd.in0
+net handwheelB jogUpAND.in0
 net NotHandwheelB handwheelBNOT.out =>
 net NotHandwheelB feedDownAND.in0
 net NotHandwheelB jogDownAND.in0
