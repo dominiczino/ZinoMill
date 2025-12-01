@@ -76,7 +76,7 @@ addf handwheelF4Comp servo-thread
 addf handwheelF5Comp servo-thread
 
 
-loadrt logic names=isLinearActiveLogicGate personality=0x206
+loadrt logic names=isLinearActiveLogicGate personality=0x1006
 addf isLinearActiveLogicGate servo-thread
 
 loadrt updown names=feedOvrUpdown,jogUpdown
@@ -206,6 +206,8 @@ net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 #################################     Control Panel I/O       ################################################
 ##############################################################################################################
 
+
+
 net jog_X_Pos lcec.0.15.din-4 => halui.axis.x.plus  => isLinearActiveLogicGate.in-00
 net jog_X_Neg lcec.0.15.din-0 => halui.axis.x.minus => isLinearActiveLogicGate.in-01
 net jog_Y_Pos lcec.0.14.din-1 => halui.axis.a.plus
@@ -222,7 +224,7 @@ net spindleStopButton lcec.0.15.din-7 => halui.spindle.0.stop
 
 net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
-
+jogButtonDelay
 
 
 #################################################
@@ -383,7 +385,7 @@ sets jogIncrementRotary 0.01
 #########   Pushbutton Jog Settings   ###########
 #################################################
 
-net jog_linear_active isLinearActiveLogicGate.or => jog_rate_selector.sel1
+net jog_linear_active isLinearActiveLogicGate.nor => jog_rate_selector.sel1
 
 net feedup feedUpAND.out => jogUpdown.countup
 net feeddown feedDownAND.out => jogUpdown.countdown
@@ -400,10 +402,12 @@ net jog_rate_scaling jog_speed_sum.out => jog_speed_scale.in
 net jog_rate_factor jog_rate_selector.out => jog_speed_scale.gain
 setp jog_speed_scale.offset 0
 
-setp jog_rate_selector.in0 7.5 #Baseline gain for rotary axis
-setp jog_rate_selector.in1 20  #Rapid mode gain for rotary axis
-setp jog_rate_selector.in2 1   #Baseline gain for linear axes
-setp jog_rate_selector.in3 2   #Rapid mode gain for linear axis
+
+setp jog_rate_selector.in0 1   #Baseline gain for linear axes
+setp jog_rate_selector.in1 2   #Rapid mode gain for linear axis
+setp jog_rate_selector.in2 7.5 #Baseline gain for rotary axis
+setp jog_rate_selector.in3 20  #Rapid mode gain for rotary axis
+
 
 net jog_rate jog_speed_scale.out => halui.axis.jog-speed
 
@@ -474,7 +478,7 @@ setp halui.rapid-override.scale 0.05
 
 net panel_Estop lcec.0.14.din-2-not => EStopNOT.in => EStopDelay.in
 net EStopResetDelayed EStopDelay.q => halui.estop.reset 
-setp EStopDelay.pt 0.5
+setp EStopDelay.pt 1
 
 net panel_Estop_neg EStopNOT.out => EStopAND.in0 halui.estop.activate
 
