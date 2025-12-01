@@ -226,7 +226,7 @@ net y2-pos-fb => joint.2.motor-pos-fb <= cia402.2.pos-fb
 
 #Set up homing 
 net J2-probe-val lcec.0.2.probe-1-en => indexEdgeJ2.in
-net J2-index indexEdgeJ2.out => J2encoder.phase-Z
+net J2-index indexEdgeJ2.out => J1encoder.phase-Z #CHANGED TO THE WRONG AXIS TO PREVENT GANTRY RACKING !!!
 net J2-index-enable joint.2.index-enable <=> J2encoder.index-enable
 setp indexEdgeJ2.both TRUE
 setp indexEdgeJ2.out-width-ns 50000000
