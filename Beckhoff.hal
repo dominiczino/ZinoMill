@@ -224,8 +224,6 @@ net spindleStopButton lcec.0.15.din-7 => halui.spindle.0.stop
 
 net jog_rapid lcec.0.15.din-2 => feedOVRrapidSelector.sel jog_rate_selector.sel0
 
-jogButtonDelay
-
 
 #################################################
 ###########   Handwheel Axis Selector   #########
