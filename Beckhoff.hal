@@ -164,7 +164,7 @@ net J2homesw lcec.0.11.din-7     => joint.2.home-sw-in
 net J3homesw lcec.0.11.din-2-not => joint.3.home-sw-in
 net J4homesw lcec.0.11.din-6     => joint.4.home-sw-in
 #net J5homesw lcec.0.11.din-4 => joint.5.home-sw-in
-#net toolSett lcec.0.11.din-5 => ??
+net probeInput lcec.0.11.din-5 => motion.probe-input
 
 
 ########################################################################################################################
