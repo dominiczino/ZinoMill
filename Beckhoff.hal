@@ -493,5 +493,5 @@ net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in
 #################################################
 
 net panel_cycle_start lcec.0.14.din-7 => halui.program.resume halui.program.run halui.program.step
-net panel_feed_hold lcec.0.14.din-6 => halui.program.pause halui.abort 
+net panel_feed_hold lcec.0.14.din-6 => halui.program.pause halui.abort
 

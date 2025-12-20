@@ -348,9 +348,10 @@ setp indexEdgeJ5.out-width-ns 50000000
 #################################         Tool Changes       ###########################################################
 ########################################################################################################################
 
-loadusr -W hal_manualtoolchange
-net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change 
-net tool-prep-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number 
-net tool-changed hal_manualtoolchange.changed => iocontrol.0.tool-changed
-net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
+#Disabled for QtDragon
+#loadusr -W hal_manualtoolchange
+#net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change 
+#net tool-prep-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number 
+#net tool-changed hal_manualtoolchange.changed => iocontrol.0.tool-changed
+#net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 

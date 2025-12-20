@@ -1,1 +1,7 @@
 #net panel_feed_hold axisui.notifications-clear #halui.estop.reset
+
+net tool-change      hal_manualtoolchange.change   <=  iocontrol.0.tool-change
+net tool-changed     hal_manualtoolchange.changed  <=  iocontrol.0.tool-changed
+net tool-prep-number hal_manualtoolchange.number   <=  iocontrol.0.tool-prep-number
+
+net probeInput lcec.0.11.din-5 => qtdragon.led-probe 
