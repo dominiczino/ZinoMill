@@ -112,8 +112,8 @@ net Solenoid1_inv lcec.0.7.dout-2 <= solenoid1_not.out
 
 #Spindle Purge Air code is below in spindle control area
 #net Solenoid2 <= spindle.0.on
-#net Solenoid2  => lcec.0.7.dout-2 => solenoid2_not.in
-#net Solenoid2_inv lcec.0.7.dout-1 <= solenoid2_not.out
+#net Solenoid2  => lcec.0.7.dout-1 => solenoid2_not.in
+#net Solenoid2_inv lcec.0.7.dout-0 <= solenoid2_not.out
 
 #Toolsetter Purge Air
 #net Solenoid3 <= ???
@@ -180,8 +180,8 @@ net run_cmd_fwd spindleForwardAND.out => lcec.0.8.dout-6
 net run_cmd_rev spindleReverseAND.out => lcec.0.8.dout-7
 
 net spindle_Run => lcec.0.12.dout-1 #Also turn on the spindle fan if running
-net spindle_Run => lcec.0.7.dout-2 => solenoid2_not.in #and air purge
-net Solenoid2_inv lcec.0.7.dout-1 <= solenoid2_not.out
+net spindle_Run => lcec.0.7.dout-1 => solenoid2_not.in #and air purge
+net Solenoid2_inv lcec.0.7.dout-0 <= solenoid2_not.out
 
 
 
