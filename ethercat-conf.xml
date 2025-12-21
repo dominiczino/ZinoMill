@@ -273,7 +273,7 @@
 
 
     <slave idx="6" type="EK1100"/>
-    <slave idx="7" type="EL2008"/>
+    <slave idx="7" type="EL2088"/>
     <slave idx="8" type="EL2008"/>
     <slave idx="9" type="EL4022"/>
     <slave idx="10" type="EL1008"/>
