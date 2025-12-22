@@ -23,12 +23,18 @@ loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,in
 loadrt or2 names=jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
 loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder,handwheelEncoder
 
-loadrt ton names=BrakeDelay,jogDelay,spindleDelay,rapidDelay,EStopDelay
+loadrt ton names=BrakeDelay,jogDelay,spindleDelay,rapidDelay,EStopDelay,xPlusDelay,xMinusDelay,yPlusDelay,yMinusDelay,zPlusDelay,zMinusDelay
 addf BrakeDelay servo-thread
 addf jogDelay servo-thread
 addf spindleDelay servo-thread
 addf rapidDelay servo-thread
 addf EStopDelay servo-thread
+addf xPlusDelay servo-thread
+addf xMinusDelay servo-thread
+addf yPlusDelay servo-thread
+addf yMinusDelay servo-thread
+addf zPlusDelay servo-thread
+addf zMinusDelay servo-thread
 
 
 # add everything to servo thread

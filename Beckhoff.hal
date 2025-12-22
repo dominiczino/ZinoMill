@@ -79,6 +79,7 @@ addf handwheelF5Comp servo-thread
 loadrt logic names=isLinearActiveLogicGate personality=0x1006
 addf isLinearActiveLogicGate servo-thread
 
+
 loadrt updown names=feedOvrUpdown,jogUpdown
 addf feedOvrUpdown servo-thread
 addf jogUpdown servo-thread
@@ -208,16 +209,32 @@ net spindle_speed_scalar lcec.0.9.aout-0-value <= rpm_analog.out
 
 
 
-net jog_X_Pos lcec.0.15.din-4 => halui.axis.x.plus  => isLinearActiveLogicGate.in-00
-net jog_X_Neg lcec.0.15.din-0 => halui.axis.x.minus => isLinearActiveLogicGate.in-01
+net jog_X_Pos lcec.0.15.din-4 => xPlusDelay.in  => isLinearActiveLogicGate.in-00
+net jog_X_Neg lcec.0.15.din-0 => xMinusDelay.in => isLinearActiveLogicGate.in-01
 net jog_Y_Pos lcec.0.14.din-1 => halui.axis.a.plus
 net jog_Y_Neg lcec.0.15.din-5 => halui.axis.a.minus
-net jog_Z_Pos lcec.0.14.din-3 => halui.axis.z.plus  => isLinearActiveLogicGate.in-02
-net jog_Z_Neg lcec.0.15.din-3 => halui.axis.z.minus => isLinearActiveLogicGate.in-03
-net jog_A_Pos lcec.0.14.din-5 => halui.axis.y.plus  => isLinearActiveLogicGate.in-04
-net jog_A_Neg lcec.0.15.din-1 => halui.axis.y.minus => isLinearActiveLogicGate.in-05
+net jog_Z_Pos lcec.0.14.din-3 => zPlusDelay.in  => isLinearActiveLogicGate.in-02
+net jog_Z_Neg lcec.0.15.din-3 => zMinusDelay.in => isLinearActiveLogicGate.in-03
+net jog_A_Pos lcec.0.14.din-5 => yPlusDelay.in  => isLinearActiveLogicGate.in-04
+net jog_A_Neg lcec.0.15.din-1 => yMinusDelay.in => isLinearActiveLogicGate.in-05
 net jog_C_Pos lcec.0.14.din-0 => halui.axis.c.plus
 net jog_C_Neg lcec.0.14.din-4 => halui.axis.c.minus
+
+setp xPlusDelay.pt 0.05
+setp xMinusDelay.pt 0.05
+setp yPlusDelay.pt 0.05
+setp yMinusDelay.pt 0.05
+setp zPlusDelay.pt 0.05
+setp zMinusDelay.pt 0.05
+
+net jog_x_Pos_cmd xPlusDelay.q =>  halui.axis.x.plus
+net jog_x_Neg_cmd xMinusDelay.q => halui.axis.x.minus
+net jog_y_Pos_cmd yPlusDelay.q =>  halui.axis.y.plus
+net jog_y_Neg_cmd yMinusDelay.q => halui.axis.y.minus
+net jog_z_Pos_cmd zPlusDelay.q =>  halui.axis.z.plus
+net jog_z_Neg_cmd zMinusDelay.q => halui.axis.z.minus
+
+
 
 net spindleStartButton lcec.0.15.din-6 => halui.spindle.0.start
 net spindleStopButton lcec.0.15.din-7 => halui.spindle.0.stop
