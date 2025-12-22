@@ -3,12 +3,14 @@ O10 if [#5400 EQ 0]
   (debug, ERROR: TOOL MUST NOT BE ZERO)
   M2
 O10 endif
-G49 (cancel tool length offsets that are currently applied)
+G49 M5 (cancel tool length offsets and stop the spindle)
+M9 (stop coolant)
 G53 G0 Z#<_ini[ZINOPROBE]ZCLEARANCE> (goto clearance plane)
 G53 G0 X#<_ini[ZINOPROBE]XPOS> Y#<_ini[ZINOPROBE]YPOS> A#<_ini[ZINOPROBE]APOS> (position over the probe)
 
 G92 Z[#<_ini[ZINOPROBE]ZCLEARANCE> - #<_ini[ZINOPROBE]REF_HEIGHT>] (set an offset based on the toolsetter position / reference tool)
 
+M8 (turn on "flood" which is really the toolsetter purge)
 G38.2 Z0 F#<_ini[ZINOPROBE]PROBING_SPEED> (Initial rough probing move)
 G1 Z[#5063 + 0.5] F#<_ini[ZINOPROBE]PROBING_SPEED> (Backoff of the probe)
 
@@ -16,6 +18,7 @@ G38.2 Z0 F#<_ini[ZINOPROBE]PROBING_SPEED_FINAL> (Final probing move)
 G1 Z[#5063 + 0.5] F#<_ini[ZINOPROBE]PROBING_SPEED> (Backoff of the probe)
 
 G92.1 (clear previous offsets)
+M9 (turn off purge air)
 G53 G0 Z#<_ini[ZINOPROBE]ZCLEARANCE> (Retract back up to clearance plane)
 G10 L1 P#5400 Z#5063 (Set the tool length offset in the tool table)
 G43 H#5400 (Apply the tool length offset)

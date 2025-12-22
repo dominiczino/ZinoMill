@@ -116,7 +116,7 @@ net Solenoid1_inv lcec.0.7.dout-2 <= solenoid1_not.out
 #net Solenoid2_inv lcec.0.7.dout-0 <= solenoid2_not.out
 
 #Toolsetter Purge Air
-#net Solenoid3 <= ???
+net Solenoid3 <= iocontrol.0.coolant-flood
 net Solenoid3  => lcec.0.7.dout-5 => solenoid3_not.in
 net Solenoid3_inv lcec.0.7.dout-4 <= solenoid3_not.out
 
