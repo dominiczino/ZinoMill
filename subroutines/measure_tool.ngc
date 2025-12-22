@@ -16,7 +16,7 @@ G38.2 Z0 F#<_ini[ZINOPROBE]PROBING_SPEED_FINAL> (Final probing move)
 G1 Z[#5063 + 0.5] F#<_ini[ZINOPROBE]PROBING_SPEED> (Backoff of the probe)
 
 G92.1 (clear previous offsets)
-G53 G0 Z#<_ini[ZINOPROBE]TOOLSETTER_ZCLEARANCE> (Retract back up to clearance plane)
+G53 G0 Z#<_ini[ZINOPROBE]ZCLEARANCE> (Retract back up to clearance plane)
 G10 L1 P#5400 Z#5063 (Set the tool length offset in the tool table)
 G43 H#5400 (Apply the tool length offset)
 O<measure_tool> ENDSUB
