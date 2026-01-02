@@ -11,10 +11,10 @@ G53 G0 X#<_ini[ZINOPROBE]XPOS> Y#<_ini[ZINOPROBE]YPOS> A#<_ini[ZINOPROBE]APOS> (
 G92 Z[#<_ini[ZINOPROBE]ZCLEARANCE> - #<_ini[ZINOPROBE]REF_HEIGHT>] (set an offset based on the toolsetter position / reference tool)
 
 M8 (turn on "flood" which is really the toolsetter purge)
-G38.2 Z0 F#<_ini[ZINOPROBE]PROBING_SPEED> (Initial rough probing move)
+G38.2 Z#<_ini[ZINOPROBE]MINIMUM_LENGTH> F#<_ini[ZINOPROBE]PROBING_SPEED> (Initial rough probing move)
 G1 Z[#5063 + 0.5] F#<_ini[ZINOPROBE]PROBING_SPEED> (Backoff of the probe)
 
-G38.2 Z0 F#<_ini[ZINOPROBE]PROBING_SPEED_FINAL> (Final probing move)
+G38.2 Z#<_ini[ZINOPROBE]MINIMUM_LENGTH> F#<_ini[ZINOPROBE]PROBING_SPEED_FINAL> (Final probing move)
 G1 Z[#5063 + 0.5] F#<_ini[ZINOPROBE]PROBING_SPEED> (Backoff of the probe)
 
 G92.1 (clear previous offsets)
