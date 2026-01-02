@@ -160,8 +160,8 @@ net controlPWREnable => lcec.0.12.dout-2 #Turns on the drive cooling fans when s
 
 
 net J0homesw lcec.0.11.din-1-not => joint.0.home-sw-in
-net J1homesw lcec.0.11.din-0     => joint.1.home-sw-in
-net J2homesw lcec.0.11.din-7     => joint.2.home-sw-in
+net J1homesw lcec.0.11.din-0     => joint.1.home-sw-in => joint.2.home-sw-in #temp to prevent gantry racking issues
+#net J2homesw lcec.0.11.din-7     => joint.2.home-sw-in
 net J3homesw lcec.0.11.din-2-not => joint.3.home-sw-in
 net J4homesw lcec.0.11.din-6     => joint.4.home-sw-in
 #net J5homesw lcec.0.11.din-4 => joint.5.home-sw-in
