@@ -12,7 +12,7 @@ addf solenoid4_not servo-thread
 addf solenoid5_not servo-thread
 addf handwheelBNOT servo-thread
 
-loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND,feedUpAND,feedDownAND,jogUpAND,jogDownAND
+loadrt and2 names=spindleForwardAND,spindleReverseAND,spindleDrawbarInterlockAND,EStopAND,feedUpAND,feedDownAND,jogUpAND,jogDownAND,runAND,resumeAND,pauseAND
 addf spindleForwardAND servo-thread
 addf spindleReverseAND servo-thread
 addf spindleDrawbarInterlockAND servo-thread
@@ -21,6 +21,9 @@ addf feedUpAND servo-thread
 addf feedDownAND servo-thread
 addf jogUpAND servo-thread
 addf jogDownAND servo-thread
+addf runAND servo-thread
+addf resumeAND servo-thread
+addf pauseAND servo-thread
 
 loadrt tristate_bit names=handwheelFeedFeeder
 loadrt tristate_float names=feedOVRcomp,rapidOVRcomp,handwheelSpindleFeeder,handwheelRapidFeeder,handwheelJogFeeder
@@ -506,9 +509,24 @@ net controlPWREnable EStopAND.out => iocontrol.0.emc-enable-in
 
 
 #################################################
-##############   Other Buttons     ##############
+############   Start/Stop Buttons     ###########
 #################################################
 
-net panel_cycle_start lcec.0.14.din-7 => halui.program.resume halui.program.run halui.program.step
-net panel_feed_hold lcec.0.14.din-6 => halui.program.pause halui.abort
+net panel_cycle_start lcec.0.14.din-7 => startEdge.in
+net panel_feed_hold lcec.0.14.din-6 => pauseEdge.in
+setp pauseEdge.in-edge FALSE
+setp startEdge.in-edge FALSE
+setp pauseEdge.out-width-ns 100000
+setp startEdge.out-width-ns 100000
+
+net startButtonRisingEdge startEdge.out => runAND.in0 => resumeAND.in0
+net pauseButtonRisingEdge pauseEdge.out => pauseAND.in0
+
+net isPaused halui.program.is-paused => resumeAND.in1
+net isRunning halui.program.is-running => pauseAND.in1
+net isIdle halui.program.is-idle => runAND.in1
+
+net resume resumeAND.out => halui.program.resume
+net pause pauseAND.out => halui.program.pause
+net run runAND.out => halui.program.run
 

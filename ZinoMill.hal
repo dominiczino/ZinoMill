@@ -19,9 +19,10 @@ loadrt cia402 count=6
 # Also do some cartesian velocities
 #loadrt hypot names=vel_xy,vel_xyz
 
-loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,EStopResetEdge,handwheelEdge
+loadrt edge names=indexEdgeJ0,indexEdgeJ1,indexEdgeJ2,indexEdgeJ3,indexEdgeJ4,indexEdgeJ5,EStopResetEdge,handwheelEdge,startEdge,pauseEdge
 loadrt or2 names=jog_A_rate_OR,jog_C_rate_OR,jog_rate_OR
 loadrt encoder names=J0encoder,J1encoder,J2encoder,J3encoder,J4encoder,J5encoder,handwheelEncoder
+
 
 loadrt ton names=BrakeDelay,jogDelay,spindleDelay,rapidDelay,EStopDelay,xPlusDelay,xMinusDelay,yPlusDelay,yMinusDelay,zPlusDelay,zMinusDelay
 addf BrakeDelay servo-thread
@@ -87,6 +88,9 @@ addf indexEdgeJ5 servo-thread
 addf EStopResetEdge servo-thread
 
 addf handwheelEdge servo-thread
+
+addf startEdge servo-thread
+addf pauseEdge servo-thread
 
 
 addf jog_A_rate_OR servo-thread
