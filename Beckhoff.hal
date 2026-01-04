@@ -516,8 +516,8 @@ net panel_cycle_start lcec.0.14.din-7 => startEdge.in
 net panel_feed_hold lcec.0.14.din-6 => pauseEdge.in
 setp pauseEdge.in-edge FALSE
 setp startEdge.in-edge FALSE
-setp pauseEdge.out-width-ns 100000
-setp startEdge.out-width-ns 100000
+setp pauseEdge.out-width-ns 100000000
+setp startEdge.out-width-ns 100000000
 
 net startButtonRisingEdge startEdge.out => runAND.in0 => resumeAND.in0
 net pauseButtonRisingEdge pauseEdge.out => pauseAND.in0
